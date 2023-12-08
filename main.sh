@@ -116,7 +116,6 @@ countdown() {
 }
 
 quit(){
-    echo -e "${BGreen}Please star this repo if you found this script usefull"
     echo -e "${BGreen}Quiting ..."
     echo "Bye"
     exit;
@@ -262,4 +261,4 @@ progressbar
 echo ""
 
 os=$(which zypper 1>/dev/null 2>/dev/null && echo "openSUSE")
-if [ $? -eq 0 ]; then displayInfo 0 $( if [ -f "/etc/SuSE-release" ]; then "/etc/SuSE-release"; else "/etc/os-release"; fi) suse; else helpme 2; fi
+if [ $? -eq 0 ]; then displayInfo 0 $( if [ -f /etc/SuSE-release ]; then echo /etc/SuSE-release; else echo /etc/os-release; fi) suse; else helpme 2; fi
