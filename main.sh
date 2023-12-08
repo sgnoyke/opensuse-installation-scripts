@@ -96,7 +96,7 @@ sub_menu(){
         done
         echo -e "${GREEN}.) ${BLUE}Back"
         echo -e "${RED}q) ${RED}Quit"
-        read -p "Enter your choice [1-$(($total - 1))] : " input
+        read -p "${RESET}Enter your choice [1-$(($total - 1))] ${GREEN}: " input
         
         for elem in ${input[@]}
         do
