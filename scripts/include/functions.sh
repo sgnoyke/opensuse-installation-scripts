@@ -214,10 +214,8 @@ install_package() {
       echo -e "\e[1A\e[K${OK} $pkg was installed."
     else
       echo -e "\e[1A\e[K${ERROR} $pkg failed to install!"
-	  return 1
     fi
   fi
-  return 0
 }
 
 installroot_base_packages() {
@@ -274,10 +272,6 @@ installroot_base_packages() {
   
   for p in "${pkgs[@]}"; do
     install_package "$p" false true true
-    if [ $? -ne 0 ]; then
-      echo -e "\e[1A\e[K${ERROR} - $p install had failed!"
-      return 1
-    fi
   done
   return 0
 }
