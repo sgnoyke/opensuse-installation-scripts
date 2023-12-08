@@ -44,9 +44,6 @@ echo $?
 
 
 
-echo $selected_device
-
-
 
 
 
