@@ -45,12 +45,12 @@ ask_custom_option() {
 
 source_script() {
     local script="$1"
-	source <(curl -s https://raw.githubusercontent.com/sgnoyke/opensuse-installation-scripts/main/${script})
+	source <(curl -H 'Cache-Control: no-cache' -s https://raw.githubusercontent.com/sgnoyke/opensuse-installation-scripts/main/${script})
 }
 
 execute_script() {
     local script="$1"
-	bash <(curl -s https://raw.githubusercontent.com/sgnoyke/opensuse-installation-scripts/main/${script})
+	bash <(curl -H 'Cache-Control: no-cache' -s https://raw.githubusercontent.com/sgnoyke/opensuse-installation-scripts/main/${script})
 }
 
 countdown() {
