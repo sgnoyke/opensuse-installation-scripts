@@ -143,7 +143,7 @@ echo ""
 echo -e "${NOTE}Detecting System Configuration${Reset}"
 echo ""
 
-if [ $EUID -eq 0 ]; then echo "This script should not be executed as root! Exiting..."; exit 1; fi
+if [ $EUID -eq 0 ]; then echo -e "${WARN}This script should not be executed as root! Exiting ..."; exit 1; fi
 
 os=$(which zypper 1>/dev/null 2>/dev/null && echo "openSUSE")
 if [ $? -eq 0 ]; then displayInfo 0 $( if [ -f /etc/SuSE-release ]; then echo /etc/SuSE-release; else echo /etc/os-release; fi) suse; else helpme 2; fi
