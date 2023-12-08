@@ -274,3 +274,106 @@ installroot_base_packages() {
   done
   return 0
 }
+
+mount_additional_dirs() {
+  for dir in sys dev proc run; do sudo mount --rbind /$dir /mnt/$dir/ && sudo mount --make-rslave /mnt/$dir; done
+}
+
+setup_etc() {
+  sudo rm /mnt/etc/resolv.conf 2>/dev/null
+  sudo cp /etc/resolv.conf /mnt/etc/
+}
+
+setup_firstboot() {
+  sudo systemd-firstboot --root=/mnt \
+    --keymap="de-latin1" \
+    --locale-messages="de_DE.UTF-8" \
+    --timezone="Europe/Berlin" \
+    --hostname="zero" \
+    --locale=de_DE.UTF-8 \
+    --setup-machine-id \
+  --welcome=false
+}
+
+setup_fstab() {
+  local efipart="$1"
+  local rootpart="$2"
+
+  rootpart_uuid="$(sudo blkid -o value -s UUID ${rootpart})"
+  efipart_uuid="$(sudo blkid -o value -s UUID ${efipart})"
+  sudo tee /mnt/etc/fstab <<EOF
+UUID=$efipart_uuid   /boot             vfat   rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=iso8859-1,shortname=mixed,errors=remount-ro  0  2
+UUID=$rootpart_uuid  /                 btrfs  rw,noatime,compress=zstd:3,ssd,discard=async,space_cache=v2,subvol=@           0  0
+UUID=$rootpart_uuid  /home             btrfs  rw,noatime,compress=zstd:3,ssd,discard=async,space_cache=v2,subvol=@home       0  0
+UUID=$rootpart_uuid  /.snapshots       btrfs  rw,noatime,compress=zstd:3,ssd,discard=async,space_cache=v2,subvol=@snapshots  0  0
+UUID=$rootpart_uuid  /.swap            btrfs  rw,noatime,compress=zstd:3,ssd,discard=async,space_cache=v2,subvol=@swap       0  0
+
+tmpfs            /tmp              tmpfs  rw,nosuid,nodev,inode64  0  0
+/.swap/swapfile  none              swap   defaults                 0  0
+EOF
+}
+
+setup_grub_config() {
+  KERNEL="$(sudo ls /mnt/lib/modules)"
+  sudo sed -i -e 's/GRUB_CMDLINE_LINUX_DEFAULT=.*/GRUB_CMDLINE_LINUX_DEFAULT="splash=verbose loglevel=3"/' /mnt/etc/default/grub
+  sudo sed -i -e 's/GRUB_TIMEOUT=.*/GRUB_TIMEOUT=4/' /mnt/etc/default/grub
+  sudo bash -c 'echo "GRUB_DISABLE_OS_PROBER=false" >> /mnt/etc/default/grub'
+}
+
+setup_grub() {
+  local disk="$1"
+  
+  sudo chroot /mnt <<EOS
+dracut --regenerate-all --force
+grub2-install $disk
+grub2-mkconfig -o /boot/grub2/grub.cfg
+shim-install --config-file=/boot/grub2/grub.cfg
+efibootmgr
+EOS
+}
+
+setup_root_user() {
+  sudo chroot /mnt <<EOS
+echo 'Setting root passphrase ...'
+echo 'root:root' | chpasswd
+EOS
+}
+
+setup_common_services() {
+  sudo chroot /mnt <<EOS
+echo 'Enabling services ...'
+systemctl enable sshd
+systemctl enable NetworkManager
+EOS
+}
+
+setup_locale_de() {
+  sudo chroot /mnt <<EOS
+echo 'Setting locale ...'
+zypper -v -n addlocale de_DE
+localectl set-locale LANG=de_DE.UTF-8
+EOS
+}
+
+setup_system_user() {
+  local sys_user="$1"
+  
+  sudo chroot /mnt <<EOS
+echo 'Add user ...'
+useradd ${sys_user} -m
+echo "$sys_user:$sys_user" | chpasswd
+adduser ${sys_user} sudo
+EOS
+}
+
+finish_script() {
+  sudo swapoff /mnt/.swap/swapfile
+  sudo umount -R /mnt
+  echo "${GREEN}Installation finished.$(tput sgr0)"; echo
+}
+
+reboot_system() {
+  echo "${GREEN}Rebooting after <ENTER>.$(tput sgr0)"; echo
+  press_enter_and_continue
+  sudo reboot
+}
