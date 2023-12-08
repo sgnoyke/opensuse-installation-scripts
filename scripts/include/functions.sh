@@ -50,14 +50,23 @@ ask_custom_option() {
     done
 }
 
+ask_custom_input() {
+    local prompt="$1"
+    local response_var="$2"
+
+    while true; do
+        read -p "$(colorize_prompt "$CAT"  "$prompt: ")" choice
+		if [[ ! -z "$choice" ]]; then
+		  eval "$response_var='$choice'"
+		  return 0
+        fi
+		echo
+    done
+}
+
 source_script() {
     local script="$1"
 	source <(curl -H 'Cache-Control: no-cache' -s https://raw.githubusercontent.com/sgnoyke/opensuse-installation-scripts/main/${script})
-}
-
-execute_script() {
-    local script="$1"
-	bash <(curl -H 'Cache-Control: no-cache' -s https://raw.githubusercontent.com/sgnoyke/opensuse-installation-scripts/main/${script})
 }
 
 countdown() {
@@ -75,4 +84,28 @@ quit(){
     echo -e "${NOTE} Quiting ..."
     echo "Bye"
     exit;
+}
+
+select_installation_device() {
+  echo "${NOTE} Available devices in /dev/:"
+  devices=($(lsblk -rno NAME,TYPE | awk '$2=="disk" {print "/dev/"$1}'))
+
+  if [ ${#devices[@]} -eq 0 ]; then
+    echo "${WARN} No devices found."
+    exit 1
+  fi
+  
+  for ((i=0; i<${#devices[@]}; i++)); do
+    echo "$i: ${devices[$i]}"
+  done
+
+  read -p "$(colorize_prompt "$CAT"  "Choose a device (enter a number): ")" choice
+
+  if [[ ! $choice =~ ^[0-9]+$ ]] || ((choice < 0)) || ((choice >= ${#devices[@]})); then
+    echo "${WARN} Not valid number. Please choose a valid number."; echo
+    select_installation_device
+  else
+    selected_device=${devices[$choice]}
+	eval $1='$selected_device'
+  fi
 }
