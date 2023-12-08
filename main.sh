@@ -7,7 +7,7 @@ bootstrap=( minimal minimal-server minimal-laptop minimal-desktop )
 configs=( repos-dev repos-full adduser )
 
 displayInfo(){
-    echo -e "${ORANGE}"
+    echo -e "${YELLOW}"
     echo "----------------------------------"
     echo "     Distribution Information     "
     echo "----------------------------------"
