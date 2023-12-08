@@ -25,7 +25,7 @@ press_enter_and_continue() {
 ask_yes_no() {
     local response
     while true; do
-        read -p "$(colorize_prompt "$CAT" "$1 (Y/N): ")" -r response
+        read -p "$(colorize_prompt "$CAT " "$1 (Y/N): ")" -r response
         case "$response" in
             [Yy]* ) eval "$2='Y'"; return 0;;
             [Nn]* ) eval "$2='N'"; return 1;;
@@ -40,7 +40,7 @@ ask_custom_option() {
     local response_var="$3"
 
     while true; do
-        read -p "$(colorize_prompt "$CAT"  "$prompt ($valid_options): ")" choice
+        read -p "$(colorize_prompt "$CAT "  "$prompt ($valid_options): ")" choice
         if [[ " $valid_options " == *" $choice "* ]]; then
             eval "$response_var='$choice'"
             return 0
@@ -58,6 +58,7 @@ ask_custom_input() {
         read -p "$(colorize_prompt "$CAT "  "$prompt: ")" choice
 		if [[ ! -z "$choice" ]]; then
 		  eval "$response_var='$choice'"
+		  echo "$response_var"
 		  return 0
         fi
 		echo
@@ -101,13 +102,14 @@ ask_installation_device() {
     echo "$i: ${devices[$i]}"
   done
 
-  read -p "$(colorize_prompt "$CAT"  "Choose a device (enter a number): ")" choice
+  read -p "$(colorize_prompt "$CAT "  "Choose a device (enter a number): ")" choice
 
   if [[ ! $choice =~ ^[0-9]+$ ]] || ((choice < 0)) || ((choice >= ${#devices[@]})); then
     echo "${WARN} Not valid number. Please choose a valid number."; echo
     ask_installation_device
   else
 	eval "$response_var='${devices[$choice]}'"
+	echo "$response_var"
 	return 0
   fi
 }
