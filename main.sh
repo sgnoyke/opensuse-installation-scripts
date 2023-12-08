@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source <(curl -s https://raw.githubusercontent.com/sgnoyke/opensuse-installation-scripts/main/scripts/include/functions.sh)
+source <(curl -H 'Cache-Control: no-cache' -s https://raw.githubusercontent.com/sgnoyke/opensuse-installation-scripts/main/scripts/include/functions.sh)
 
 menu=( bootstrap configs )
 bootstrap=( minimal minimal-server minimal-laptop minimal-desktop )
