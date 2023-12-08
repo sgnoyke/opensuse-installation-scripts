@@ -142,11 +142,6 @@ displayInfo(){
 }
 
 helpme(){
-    echo -e "${IBlue}|=======================================|"
-    echo    "|  Would you mind helping me, please?   |"
-    echo    "|=======================================|"
-    echo -e "${Reset}"
-    
     case $1 in
         1)
             echo -e "${IRed}Your OS isn't supported yet."
@@ -266,5 +261,5 @@ echo ""
 progressbar
 echo ""
 
-
-if [ -f /etc/SuSE-release ];   then displayInfo 0 "/etc/SuSE-release" suse; else helpme 2; fi
+os=$(which zypper 1>/dev/null 2>/dev/null && echo "openSUSE")
+if [ $? -eq 0 ]; then displayInfo 0 $( if [ -f "/etc/SuSE-release"]; then "/etc/SuSE-release"; else "/etc/os-release"; fi) suse; else helpme 2; fi
