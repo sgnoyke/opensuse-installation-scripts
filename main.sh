@@ -7,7 +7,7 @@ bootstrap=( minimal minimal-server minimal-laptop minimal-desktop )
 configs=( repos-dev repos-full adduser )
 
 displayInfo(){
-    echo -e "${YELLOW}"
+    echo -e "${BLUE}"
     echo "----------------------------------"
     echo "     Distribution Information     "
     echo "----------------------------------"
@@ -28,22 +28,22 @@ displayInfo(){
 helpme(){
     case $1 in
         1)
-            echo -e "${WARN}Your OS isn't supported yet."
+            echo -e "${WARN} Your OS isn't supported yet."
             echo -e "${RESET}"
         ;;
         
         2)
-            echo -e "${WARN}Sorry! Couldn't recognize your OS."
+            echo -e "${WARN} Sorry! Couldn't recognize your OS."
             echo -e "${RESET}"
         ;;
         
         3)
-            echo -e "${WARN}This installation isn't supported yet."
+            echo -e "${WARN} This installation isn't supported yet."
             echo -e "${RESET}"
         ;;
         
         4)
-            echo -e "${WARN}Something went wrong."
+            echo -e "${WARN} Something went wrong."
             echo -e "${RESET}"
         ;;
         
@@ -53,16 +53,16 @@ helpme(){
 
 start(){
     echo ""
-    echo -e "${NOTE}Installing $1 for $2 ${RESET}"
+    echo -e "${NOTE} Installing $1 for $2 ${RESET}"
     echo ""
 }
 
 check(){
     echo ""
     if [ $1 -eq 0 ]; then
-        echo -e "${OK}Installation complete."
+        echo -e "${OK} Installation complete."
     else
-        echo -e "${ERROR}Installation failed!"
+        echo -e "${ERROR} Installation failed!"
         echo "Some error occurred during installation or installation was aborted manually."
     fi
     echo ""
@@ -92,10 +92,10 @@ sub_menu(){
         
         for (( i=1; i<=$(( $total - 1 )); i++ ))
         do
-            echo -e "${NOTE}$i) ${NOTE}${array[$i]^}"
+            echo -e "${GREEN}$i) ${BLUE}${array[$i]^}"
         done
-        echo -e "${NOTE}.) ${NOTE}Back"
-        echo -e "${NOTE}q) ${NOTE}Quit"
+        echo -e "${GREEN}.) ${BLUE}Back"
+        echo -e "${RED}q) ${RED}Quit"
         read -p "Enter your choice [1-$(($total - 1))] : " input
         
         for elem in ${input[@]}
@@ -119,9 +119,9 @@ main_menu(){
         clear
         for (( i=1; i<=$(( $total - 1 )); i++ ))
         do
-            echo -e "${NOTE}$i) ${NOTE}${array[$i]^}"
+            echo -e "${GREEN}$i) ${BLUE}${array[$i]^}"
         done
-        echo -e "${NOTE}q) ${NOTE}Quit"
+        echo -e "${RED}q) ${RED}Quit"
         read -r -p "Enter your choice [1-$(($total - 1))] : " input
         if [[ "$input" -ge 1 && "$input" -lt $total ]] ; then sub=${array[$input]}[@]; sub_menu ${array[0]} ${!sub};
             elif [[ $input = "q" ]] || [[ $input = "Q" ]] ; then quit
@@ -131,19 +131,19 @@ main_menu(){
     done
 }
 
-echo -e "${CAT}"
+echo -e "${GREEN}"
 echo " ======================================================== "
 echo " |                                                      | "
 echo " |          OpenSUSE Installation Script v 0.1          | "
 echo " |                                                      | "
 echo " ======================================================== "
 echo ""
-echo -e "${NOTE}https://github.com/sgnoyke/opensuse-installation-scripts"
+echo -e "${NOTE} https://github.com/sgnoyke/opensuse-installation-scripts"
 echo ""
-echo -e "${NOTE}Detecting System Configuration${Reset}"
+echo -e "${NOTE} Detecting System Configuration${Reset}"
 echo ""
 
-if [ $EUID -eq 0 ]; then echo -e "${WARN}This script should not be executed as root! Exiting ..."; exit 1; fi
+if [ $EUID -eq 0 ]; then echo -e "${WARN} This script should not be executed as root! Exiting ..."; exit 1; fi
 
 os=$(which zypper 1>/dev/null 2>/dev/null && echo "openSUSE")
 if [ $? -eq 0 ]; then displayInfo 0 $( if [ -f /etc/SuSE-release ]; then echo /etc/SuSE-release; else echo /etc/os-release; fi) suse; else helpme 2; fi

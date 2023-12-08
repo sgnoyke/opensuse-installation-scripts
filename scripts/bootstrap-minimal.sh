@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if [ $EUID -eq 0 ]; then echo -e "${WARN}This script should not be executed as root! Exiting ..."; exit 1; fi
+if [ $EUID -eq 0 ]; then echo -e "${WARN} This script should not be executed as root! Exiting ..."; exit 1; fi
 
 # Welcome message
 echo "$(tput setaf 6)Welcome to OpenSUSE (Tumbleweed) - Minimal Bootstrap Script!$(tput sgr0)"

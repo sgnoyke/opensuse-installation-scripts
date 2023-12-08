@@ -7,6 +7,9 @@ WARN="$(tput setaf 166)[WARN]$(tput sgr0)"
 CAT="$(tput setaf 6)[ACTION]$(tput sgr0)"
 ORANGE=$(tput setaf 166)
 YELLOW=$(tput setaf 3)
+GREEN=$(tput setaf 2)
+BLUE=$(tput setaf 6)
+RED=$(tput setaf 1)
 RESET=$(tput sgr0)
 
 colorize_prompt() {
@@ -59,13 +62,13 @@ countdown() {
     msg=$@
     while [ $secs -gt 0 ]
     do
-        printf "\r\033[K${NOTE}$msg in %.d seconds" $((secs--))
+        printf "\r\033[K${NOTE} $msg in %.d seconds" $((secs--))
         sleep 1
     done
 }
 
 quit(){
-    echo -e "${NOTE}Quiting ..."
+    echo -e "${NOTE} Quiting ..."
     echo "Bye"
     exit;
 }
