@@ -73,7 +73,7 @@ check(){
 suse(){
     start $1 "openSuSe"
     case $1 in
-        minimal) helpme 3 ;;
+        minimal) source_script "scripts/bootstrap-minimal.sh" ;;
         minimal-server) helpme 3 ;;
         minimal-laptop) helpme 3 ;;
         minimal-desktop) helpme 3 ;;
