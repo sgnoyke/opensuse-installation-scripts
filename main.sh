@@ -7,7 +7,7 @@ bootstrap=( minimal minimal-server minimal-laptop minimal-desktop )
 configs=( repos-dev repos-full adduser )
 
 displayInfo(){
-    echo -e "${IGreen}"
+    echo -e "${ORANGE}"
     echo "----------------------------------"
     echo "     Distribution Information     "
     echo "----------------------------------"
@@ -53,7 +53,7 @@ helpme(){
 
 start(){
     echo ""
-    echo -e "${NOTE} Installing $1 for $2 ${Reset}"
+    echo -e "${NOTE}Installing $1 for $2 ${RESET}"
     echo ""
 }
 
