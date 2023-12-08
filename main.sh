@@ -122,7 +122,7 @@ main_menu(){
             echo -e "${GREEN}$i) ${BLUE}${array[$i]^}"
         done
         echo -e "${RED}q) ${RED}Quit"
-        read -r -p "${RESET}Enter your choice [1-$(($total - 1))] : " input
+        read -p "${RESET}Enter your choice [1-$(($total - 1))] : " input
         if [[ "$input" -ge 1 && "$input" -lt $total ]] ; then sub=${array[$input]}[@]; sub_menu ${array[0]} ${!sub};
             elif [[ $input = "q" ]] || [[ $input = "Q" ]] ; then quit
         else clear ;
