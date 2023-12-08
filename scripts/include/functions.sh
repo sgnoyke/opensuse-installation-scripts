@@ -43,6 +43,7 @@ ask_custom_option() {
         read -p "$(colorize_prompt "$CAT "  "$prompt ($valid_options): ")" choice
         if [[ " $valid_options " == *" $choice "* ]]; then
             eval "$response_var='$choice'"
+			echo "$choice"
             return 0
         else
             echo "Please choose one of the provided options: $valid_options"
@@ -58,7 +59,6 @@ ask_custom_input() {
         read -p "$(colorize_prompt "$CAT "  "$prompt: ")" choice
 		if [[ ! -z "$choice" ]]; then
 		  eval "$response_var='$choice'"
-		  echo "$response_var"
 		  return 0
         fi
 		echo
@@ -109,7 +109,7 @@ ask_installation_device() {
     ask_installation_device
   else
 	eval "$response_var='${devices[$choice]}'"
-	echo "$response_var"
+	echo "${devices[$choice]}"
 	return 0
   fi
 }
