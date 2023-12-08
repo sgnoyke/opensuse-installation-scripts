@@ -230,7 +230,6 @@ installroot_base_packages() {
     nano
     shadow
     util-linux
-	pam_pwquality
     wicked
 	iputils
     openssh-server
