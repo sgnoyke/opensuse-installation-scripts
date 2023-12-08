@@ -94,9 +94,9 @@ sub_menu(){
         do
             echo -e "${GREEN}$i) ${BLUE}${array[$i]^}"
         done
-        echo -e "${GREEN}.) ${BLUE}Back"
+        echo -e "${YELLOW}.) ${YELLOW}Back"
         echo -e "${RED}q) ${RED}Quit"
-        read -p "${RESET}Enter your choice [1-$(($total - 1))] ${GREEN}: " input
+        read -p "${RESET}Enter your choice [1-$(($total - 1))] : " input
         
         for elem in ${input[@]}
         do
