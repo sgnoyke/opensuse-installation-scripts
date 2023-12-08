@@ -16,6 +16,8 @@ if [ "$proceed" != "y" ]; then echo "${WARN} Installation aborted."; return -1; 
 DISK=""
 SYS_USER=""
 Q="N"
+EFI_PARTITION=""
+ROOT_PARTITION=""
 
 # functions
 
@@ -23,18 +25,12 @@ Q="N"
 ask_installation_device DISK; echo
 ask_custom_input "Enter a user name (sudo system user)" SYS_USER; echo
 
-# .. get_partition_names
-EFI_PARTITION="${DISK}1"
-ROOT_PARTITION="${DISK}2"
-[[ ${DISK} =~ "nvme" ]] && EFI_PARTITION="${DISK}p1" && ROOT_PARTITION="${DISK}p2"
+get_partition_names ${DISK} EFI_PARTITION ROOT_PARTITION
 
 ask_yes_no "ATTENTION: ${DISK} will be wiped"  Q; echo
 if [ "${Q}" != "Y" ]; then echo "${WARN} Installation aborted."; return -1; fi; echo
 
-# .. wipe_disk
-sudo wipefs -a ${DISK}
-sudo dd if=/dev/zero of=${DISK} bs=446 count=1
-echo -e "g\nn\n1\n\n+512M\nn\n2\n\n\nt\n1\n1\nw\n" | sudo fdisk -w always -W always ${DISK}
+wipe_disk ${DISK}
 
 # .. format_partitions
 sudo mkfs.fat -F32 ${EFI_PARTITION}

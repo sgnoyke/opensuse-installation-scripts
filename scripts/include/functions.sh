@@ -113,3 +113,25 @@ ask_installation_device() {
 	return 0
   fi
 }
+
+get_partition_names() {
+  local disk="$1"
+  local response_efi_var="$2"
+  local response_root_var="$3"
+  
+  efipart="${disk}1"
+  rootpart="${disk}2"
+  [[ ${disk} =~ "nvme" ]] && efipart="${disk}p1" && rootpart="${disk}p2"
+  eval "$response_efi_var='${efipart}'"
+  eval "$response_root_var='${rootpart}'"
+  return 0
+}
+
+wipe_disk() {
+  local disk="$1"
+  
+  sudo wipefs -a ${disk}
+  sudo dd if=/dev/zero of=${disk} bs=446 count=1
+  echo -e "g\nn\n1\n\n+512M\nn\n2\n\n\nt\n1\n1\nw\n" | sudo fdisk -w always -W always ${disk}
+  return 0
+}
