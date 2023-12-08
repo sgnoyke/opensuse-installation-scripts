@@ -14,14 +14,14 @@ if [ "$proceed" != "y" ]; then echo "${WARN} Installation aborted."; return -1; 
 
 # variables
 DISK=""
-USER=""
+SYS_USER=""
 Q="N"
 
 # functions
 
 # main part
 ask_installation_device DISK; echo
-ask_custom_input "Enter a user name (sudo system user)" USER; echo
+ask_custom_input "Enter a user name (sudo system user)" SYS_USER; echo
 
 EFI_PARTITION="${DISK}1"
 ROOT_PARTITION="${DISK}2"
@@ -158,9 +158,9 @@ echo 'Setting locale ...'
 zypper -v -n addlocale de_DE
 localectl set-locale LANG=de_DE.UTF-8
 echo 'Add user ...'
-useradd ${USER} -m
-echo "$USER:$USER" | chpasswd
-adduser ${USER} sudo
+useradd ${SYS_USER} -m
+echo "$SYS_USER:$SYS_USER" | chpasswd
+adduser ${SYS_USER} sudo
 EOS
 
 sudo swapoff /mnt/.swap/swapfile
