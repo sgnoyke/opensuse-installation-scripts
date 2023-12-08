@@ -18,6 +18,10 @@ colorize_prompt() {
     echo -n "${color}${message}$(tput sgr0)"
 }
 
+press_enter_and_continue() {
+	read -p "${RESET}Press enter to continue"
+}
+
 ask_yes_no() {
     local response
     while true; do

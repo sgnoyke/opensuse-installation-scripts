@@ -21,7 +21,7 @@ displayInfo(){
     fi
     
     echo -e "${RESET}"
-    read -p "Press enter to continue"
+    press_enter_and_continue
     main_menu $3 ${menu[@]}
 }
 
@@ -49,6 +49,7 @@ helpme(){
         
         *) echo "Wow! You have reached a new milestone."
     esac
+	press_enter_and_continue
 }
 
 start(){
