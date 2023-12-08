@@ -55,7 +55,7 @@ ask_custom_input() {
     local response_var="$2"
 
     while true; do
-        read -p "$(colorize_prompt "$CAT"  "$prompt: ")" choice
+        read -p "$(colorize_prompt "$CAT "  "$prompt: ")" choice
 		if [[ ! -z "$choice" ]]; then
 		  eval "$response_var='$choice'"
 		  return 0
