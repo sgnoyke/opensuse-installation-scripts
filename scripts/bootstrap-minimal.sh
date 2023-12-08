@@ -35,12 +35,13 @@ select_installation_device() {
   else
     selected_device=${devices[$choice]}
     echo "$selected_device"
+	eval $1='$selected_device'
   fi
 }
 
 # main part
-select_installation_device
-echo $?
+select_installation_device sss
+echo $sss
 
 
 
