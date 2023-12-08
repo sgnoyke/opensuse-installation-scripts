@@ -19,110 +19,30 @@ Q="N"
 EFI_PARTITION=""
 ROOT_PARTITION=""
 
-# functions
-
 # main part
 ask_installation_device DISK; echo
 ask_custom_input "Enter a user name (sudo system user)" SYS_USER; echo
 
 get_partition_names ${DISK} EFI_PARTITION ROOT_PARTITION
 
-ask_yes_no "ATTENTION: ${DISK} will be wiped"  Q; echo
+ask_yes_no "ATTENTION: ${DISK} will be wiped" Q; echo
 if [ "${Q}" != "Y" ]; then echo "${WARN} Installation aborted."; return -1; fi; echo
 
 wipe_disk ${DISK}
+format_partitions ${EFI_PARTITION} ${ROOT_PARTITION}
+setup_subvolumes ${ROOT_PARTITION}
+mount_partitions ${EFI_PARTITION} ${ROOT_PARTITION}
+setup_swapfile
+setup_default_subvolume
+setup_default_zypper_repos
+installroot_base_packages
 
-# .. format_partitions
-sudo mkfs.fat -F32 ${EFI_PARTITION}
-sudo mkfs.btrfs ${ROOT_PARTITION}
 
-# .. setup_subvolumes
-sudo mount ${ROOT_PARTITION} /mnt
-sudo btrfs subvolume create /mnt/@
-sudo btrfs subvolume create /mnt/@home
-sudo btrfs subvolume create /mnt/@snapshots
-sudo btrfs subvolume create /mnt/@swap
-sudo umount /mnt
-
-# .. mount_partitions
-sudo mount -t btrfs -o rw,noatime,ssd,discard=async,space_cache=v2,compress=zstd,subvol=@ ${ROOT_PARTITION} /mnt
-sudo mkdir -p /mnt/{home,.snapshots,.swap,boot/efi}
-sudo mount -t btrfs -o rw,noatime,ssd,discard=async,space_cache=v2,compress=zstd,subvol=@home ${ROOT_PARTITION} /mnt/home
-sudo mount -t btrfs -o rw,noatime,ssd,discard=async,space_cache=v2,compress=zstd,subvol=@snapshots ${ROOT_PARTITION} /mnt/.snapshots
-sudo mount -t btrfs -o rw,noatime,ssd,discard=async,space_cache=v2,compress=zstd,subvol=@swap ${ROOT_PARTITION} /mnt/.swap
-sudo mount ${EFI_PARTITION} /mnt/boot/efi
-
-# .. setup_swapfile
-TOTAL_MEM="$(awk '/MemTotal/ {printf( "%d\n", $2 / 1024 )}' /proc/meminfo)"
-SWAPFILE_SIZE="$((${TOTAL_MEM} + 2048))"
-sudo chattr +C /mnt/.swap/
-sudo truncate -s 0 /mnt/.swap/swapfile
-sudo dd if=/dev/zero of=/mnt/.swap/swapfile bs=1M count=${SWAPFILE_SIZE} status=progress
-sudo chmod 600 /mnt/.swap/swapfile
-sudo mkswap /mnt/.swap/swapfile
-sudo swapon /mnt/.swap/swapfile
-
-# .. setup_default_subvolume
-sudo btrfs subvolume set-default $(sudo btrfs subvolume list /mnt | sudo grep "@snapshots" | sudo grep -oP '(?<=ID )[0-9]+') /mnt
-
-# .. setup_default_repos
-sudo zypper --root /mnt ar -Gfp 99 --refresh https://download.opensuse.org/tumbleweed/repo/non-oss/ tumbleweed-non-oss
-sudo zypper --root /mnt ar -Gfp 99 --refresh https://download.opensuse.org/tumbleweed/repo/oss/ tumbleweed-oss
-sudo zypper --root /mnt ar -Gfp 99 --refresh https://download.opensuse.org/update/tumbleweed/ tumbleweed-updates
-sudo zypper --gpg-auto-import-keys --root /mnt ref -f
-
-# .. install_common_software
-sudo zypper -v -n --installroot /mnt --gpg-auto-import-keys install --download-in-advance -l -y --no-recommends \
-  btrfsprogs \
-  xfsprogs \
-  kernel-default \
-  grub2-x86_64-efi \
-  zypper \
-  nano \
-  shadow \
-  util-linux \
-  wicked iputils \
-  openssh-server \
-  dmraid \
-  ca-certificates-mozilla \
-  ca-certificates \
-  ca-certificates-cacert \
-  lsof \
-  shim \
-  git \
-  NetworkManager \
-  aaa_base \
-  aaa_base-extras \
-  iproute2 \
-  net-tools \
-  procps less \
-  psmisc \
-  timezone \
-  curl \
-  sudo \
-  zip \
-  unzip \
-  openssl \
-  pciutils \
-  usbutils \
-  zsh \
-  tmux \
-  iptables \
-  nftables \
-  tcpdump \
-  xz \
-  7zip \
-  sops \
-  jq \
-  hwdata \
-  psmisc \
-  opi
-
-# .. setup_additionals_dirs
+# .. mount_additional_dirs
 for dir in sys dev proc run; do sudo mount --rbind /$dir /mnt/$dir/ && sudo mount --make-rslave /mnt/$dir; done
-sudo rm /mnt/etc/resolv.conf 2>/dev/null
 
 # .. setup_etc
+sudo rm /mnt/etc/resolv.conf 2>/dev/null
 sudo cp /etc/resolv.conf /mnt/etc/
 
 # .. setup_firstboot
