@@ -145,7 +145,7 @@ format_partitions() {
   return 0
 }
 
-setup_subvolumes {
+setup_subvolumes() {
   local rootpart="$1"
 
   sudo mount ${rootpart} /mnt
