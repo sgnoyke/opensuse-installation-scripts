@@ -1,0 +1,1 @@
+# opensuse-installation-scripts
