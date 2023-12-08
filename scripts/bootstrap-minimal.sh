@@ -19,8 +19,8 @@ USER=""
 # functions
 
 # main part
-select_installation_device DISK
-ask_custom_input "Enter a user name (sudo system user)" USER
+ask_installation_device DISK; echo
+ask_custom_input "Enter a user name (sudo system user)" USER; echo
 
 
 echo "$DISK $USER"

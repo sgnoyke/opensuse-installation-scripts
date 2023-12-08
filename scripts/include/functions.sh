@@ -86,7 +86,9 @@ quit(){
     exit;
 }
 
-select_installation_device() {
+ask_installation_device() {
+  local response_var="$1"
+  
   echo "${NOTE} Available devices in /dev/:"
   devices=($(lsblk -rno NAME,TYPE | awk '$2=="disk" {print "/dev/"$1}'))
 
@@ -103,9 +105,9 @@ select_installation_device() {
 
   if [[ ! $choice =~ ^[0-9]+$ ]] || ((choice < 0)) || ((choice >= ${#devices[@]})); then
     echo "${WARN} Not valid number. Please choose a valid number."; echo
-    select_installation_device
+    ask_installation_device
   else
-    selected_device=${devices[$choice]}
-	eval $1='$selected_device'
+	eval "$response_var='${devices[$choice]}'"
+	return 0
   fi
 }
