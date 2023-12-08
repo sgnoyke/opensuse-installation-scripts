@@ -10,4 +10,6 @@ echo
 
 read -p "${BLUE}Would you like to proceed? (y/n): $(tput sgr0)" proceed
 
-if [ "$proceed" != "y" ]; then echo "${WARN} Installation aborted."; exit 0; fi
+if [ "$proceed" != "y" ]; then echo "${WARN} Installation aborted."; return 1; fi
+
+return 0
