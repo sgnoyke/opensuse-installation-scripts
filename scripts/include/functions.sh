@@ -210,8 +210,7 @@ install_package() {
   else
     echo -e "${NOTE} Installing $pkg ..."
     sudo $cmd "$pkg"
-	echo $?
-    if sudo zypper se -i "$pkg" &>> /dev/null ; then
+    if [ $? -eq 0 ] ; then
       echo -e "\e[1A\e[K${OK} $pkg was installed."
     else
       echo -e "\e[1A\e[K${ERROR} $pkg failed to install!"
