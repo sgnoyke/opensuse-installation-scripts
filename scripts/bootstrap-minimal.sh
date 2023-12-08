@@ -36,6 +36,7 @@ setup_swapfile
 setup_default_subvolume
 setup_default_zypper_repos
 installroot_base_packages
+exit 0;
 
 
 # .. mount_additional_dirs
