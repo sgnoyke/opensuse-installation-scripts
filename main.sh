@@ -52,12 +52,6 @@ helpme(){
 	press_enter_and_continue
 }
 
-start(){
-    echo ""
-    echo -e "${NOTE} Installing $1 for $2 ${RESET}"
-    echo ""
-}
-
 check(){
     echo ""
     if [ $1 -eq 0 ]; then
@@ -71,7 +65,6 @@ check(){
 }
 
 suse(){
-    start $1 "openSuSe"
     case $1 in
         minimal) source_script "scripts/bootstrap-minimal.sh" ;;
         minimal-server) helpme 3 ;;
@@ -144,7 +137,7 @@ echo ""
 echo -e "${NOTE} Detecting System Configuration${Reset}"
 echo ""
 
-if [ $EUID -eq 0 ]; then echo -e "${WARN} This script should not be executed as root! Exiting ..."; exit 1; fi
+if [ $EUID -eq 0 ]; then echo -e "${ERROR} This script should not be executed as root! Exiting ..."; exit 1; fi
 
 os=$(which zypper 1>/dev/null 2>/dev/null && echo "openSUSE")
 if [ $? -eq 0 ]; then displayInfo 0 $( if [ -f /etc/SuSE-release ]; then echo /etc/SuSE-release; else echo /etc/os-release; fi) suse; else helpme 2; fi
