@@ -126,11 +126,11 @@ main_menu(){
 }
 
 echo -e "${GREEN}"
-echo " ======================================================== "
-echo " |                                                      | "
-echo " |          OpenSUSE Installation Script v 0.1          | "
-echo " |                                                      | "
-echo " ======================================================== "
+echo " ======================================================= "
+echo " |                                                     | "
+echo " |          OpenSUSE Installation Script v0.1          | "
+echo " |                                                     | "
+echo " ======================================================= "
 echo ""
 echo -e "${NOTE} https://github.com/sgnoyke/opensuse-installation-scripts"
 echo ""

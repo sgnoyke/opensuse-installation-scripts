@@ -209,7 +209,7 @@ install_package() {
     echo -e "${OK} $pkg is already installed. Skipping..."
   else
     echo -e "${NOTE} Installing $pkg ..."
-    sudo $cmd "$pkg" 2>&1
+    sudo $cmd "$pkg"
     if sudo zypper se -i "$pkg" &>> /dev/null ; then
       echo -e "\e[1A\e[K${OK} $pkg was installed."
     else
