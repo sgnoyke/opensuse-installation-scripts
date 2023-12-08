@@ -39,7 +39,8 @@ select_installation_device {
 }
 
 # main part
-selected_device=$(select_installation_device)
+select_installation_device
+echo $?
 
 
 
