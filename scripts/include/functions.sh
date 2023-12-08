@@ -230,7 +230,9 @@ installroot_base_packages() {
     nano
     shadow
     util-linux
-    wicked iputils
+	pam_pwquality
+    wicked
+	iputils
     openssh-server
     dmraid
     ca-certificates-mozilla
