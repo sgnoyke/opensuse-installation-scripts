@@ -43,6 +43,8 @@ select_installation_device() {
 select_installation_device sss
 echo $sss
 
+press_enter_and_continue
+
 
 
 
