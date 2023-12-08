@@ -33,13 +33,12 @@ select_installation_device() {
     echo "${WARN} Not valid number. Please choose a valid number."
     select_installation_device
   else
-    selected_device=${devices[$choice]}
-    echo "$selected_device"
-	eval $1='$selected_device'
+	eval $1=${devices[$choice]}
   fi
 }
 
 # main part
+sss="bla"
 select_installation_device sss
 echo $sss
 
