@@ -136,7 +136,7 @@ displayInfo(){
     fi
     
     echo -e "${Reset}"
-    countdown 3 Installation starting
+    read -p "Press enter to continue"
     main_menu $3 ${menu[@]}
 }
 
