@@ -214,9 +214,10 @@ install_package() {
       echo -e "\e[1A\e[K${OK} $pkg was installed."
     else
       echo -e "\e[1A\e[K${ERROR} $pkg failed to install!"
-      exit 1
+	  return 1
     fi
   fi
+  return 0
 }
 
 installroot_base_packages() {
