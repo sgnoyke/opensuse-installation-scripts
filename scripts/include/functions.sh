@@ -226,6 +226,7 @@ installroot_base_packages() {
     kernel-default
     grub2-x86_64-efi
     zypper
+	opi
     nano
     shadow
     util-linux
@@ -267,7 +268,6 @@ installroot_base_packages() {
     jq
     hwdata
     psmisc
-    opi
   )
   
   for p in "${pkgs[@]}"; do
