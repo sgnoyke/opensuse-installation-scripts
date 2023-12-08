@@ -14,7 +14,7 @@ if [ "$proceed" != "y" ]; then echo "${WARN} Installation aborted."; return -1; 
 echo
 
 # functions
-select_installation_device {
+select_installation_device() {
   echo "${NOTE} Available devices in /dev/:"
   devices=($(lsblk -rno NAME,TYPE | awk '$2=="disk" {print "/dev/"$1}'))
 
