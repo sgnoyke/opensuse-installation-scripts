@@ -394,11 +394,51 @@ EOF
 finish_script() {
   sudo swapoff /mnt/.swap/swapfile
   sudo umount -R /mnt
-  echo "${GREEN}Installation finished.$(tput sgr0)"; echo
+  echo "${GREEN}Finished.$(tput sgr0)"; echo
 }
 
 reboot_system() {
   echo "${GREEN}Rebooting after <ENTER>.$(tput sgr0)"; echo
   press_enter_and_continue
   sudo reboot
+}
+
+setup_desktop_zypper_repos() {
+  printf "\n%s - Adding additional repository (Globally) for desktop use... \n" "${NOTE}"
+  sudo zypper -n --quiet ar --refresh -Gfp 70 https://ftp.fau.de/packman/suse/openSUSE_Tumbleweed/ packman
+  sudo zypper -n --quiet ar --refresh -Gfp 80 https://download.nvidia.com/opensuse/tumbleweed/ Nvidia
+  sudo zypper -n --quiet ar --refresh -Gfp 80 https://download.opensuse.org/repositories/Emulators:/Wine/openSUSE_Tumbleweed/Emulators:Wine.repo
+  sudo zypper -n --quiet ar --refresh -Gfp 80 https://download.opensuse.org/repositories/filesystems/openSUSE_Tumbleweed/filesystems.repo
+  sudo zypper -n --quiet ar --refresh -Gfp 80 https://download.opensuse.org/repositories/graphics/openSUSE_Tumbleweed/graphics.repo
+  sudo zypper -n --quiet ar --refresh -Gfp 80 https://download.opensuse.org/repositories/home:/ahjolinna/openSUSE_Tumbleweed/home:ahjolinna.repo
+  sudo zypper -n --quiet ar --refresh -Gfp 80 https://download.opensuse.org/repositories/home:/ithod:/signal/openSUSE_Tumbleweed/home:ithod:signal.repo
+  sudo zypper -n --quiet ar --refresh -Gfp 80 https://download.opensuse.org/repositories/home:/nuklly/openSUSE_Tumbleweed/home:nuklly.repo
+  sudo zypper -n --quiet ar --refresh -Gfp 80 https://download.opensuse.org/repositories/home:/strycore/openSUSE_Tumbleweed/ Lutris
+  sudo zypper -n --quiet ar --refresh -Gfp 80 https://download.opensuse.org/repositories/multimedia:/apps/openSUSE_Tumbleweed/multimedia:apps.repo
+  sudo zypper -n --quiet ar --refresh -Gfp 80 https://download.opensuse.org/repositories/multimedia:/libs/openSUSE_Tumbleweed/multimedia:libs.repo
+  sudo zypper -n --quiet ar --refresh -Gfp 80 https://packages.microsoft.com/yumrepos/vscode vscode
+  sudo zypper -n --quiet ar --refresh -Gfp 80 obs://network:vpn:wireguard wireguard
+  sudo zypper --gpg-auto-import-keys ref -f
+  sudo zypper -n dup --from packman --allow-vendor-change
+}
+
+install_hypr_dependencies() {
+  printf "\n%s - Installing dependencies... \n" "${NOTE}"
+  pkgs=(
+    devel_basis
+  )
+  
+  opi_pkgs=(
+    opi
+	go
+  )
+  
+  for p in "${pkgs[@]}"; do
+    install_package "$p" true false false
+  done
+  
+  for p in "${opi_pkgs[@]}"; do
+    install_package "$p" false false false
+  done
+  return 0
 }

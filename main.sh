@@ -2,9 +2,9 @@
 
 source <(curl -H 'Cache-Control: no-cache' -s https://raw.githubusercontent.com/sgnoyke/opensuse-installation-scripts/main/scripts/include/functions.sh)
 
-menu=( bootstrap configs )
-bootstrap=( minimal minimal-server minimal-laptop minimal-desktop )
-configs=( repos-dev repos-full adduser )
+menu=( bootstrap extend-system )
+bootstrap=( minimal )
+extend-system=( hyprland )
 
 displayInfo(){
     echo -e "${BLUE}"
@@ -67,11 +67,7 @@ check(){
 suse(){
     case $1 in
         minimal) source_script "scripts/bootstrap-minimal.sh" ;;
-        minimal-server) helpme 3 ;;
-        minimal-laptop) helpme 3 ;;
-        minimal-desktop) helpme 3 ;;
-        repos-dev) helpme 3 ;;
-        repos-full) helpme 3 ;;
+        hyprland) "scripts/setup-hyprland.sh" ;;
         *) helpme 4
     esac
 }
