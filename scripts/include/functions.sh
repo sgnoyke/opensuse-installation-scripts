@@ -201,19 +201,21 @@ install_package() {
   local installroot="${3:-false}"
   local norecommends="${4:-false}"
   
-  cmd="zypper -v -n"
-  if "$installroot"; then cmd="$cmd --installroot /mnt"; fi
-  cmd="$cmd --gpg-auto-import-keys install --download-in-advance -l -y"
-  if "$norecommends"; then cmd="$cmd --no-recommends"; fi
-  if "$ispattern"; then cmd="$cmd -t pattern"; fi
-  
-  echo "$cmd"
-  
-  if sudo zypper se -i "$pkg" &>> /dev/null ; then
+  cmd_inst="zypper -v -n"
+  if "$installroot"; then cmd_inst="$cmd_inst --installroot /mnt"; fi
+  cmd_inst="$cmd_inst --gpg-auto-import-keys install --download-in-advance -l -y"
+  if "$norecommends"; then cmd_inst="$cmd_inst --no-recommends"; fi
+  if "$ispattern"; then cmd_inst="$cmd_inst -t pattern"; fi
+
+  cmd_chk="zypper -v -n"
+  if "$installroot"; then cmd_chk="$cmd_chk --installroot /mnt"; fi
+  cmd_chk="$cmd_chk se -i"
+    
+  if sudo $cmd_chk "$pkg" &>> /dev/null ; then
     echo -e "${OK} $pkg is already installed. Skipping..."
   else
     echo -e "${NOTE} Installing $pkg ..."
-    sudo $cmd "$pkg"
+    sudo $cmd_inst "$pkg"
     if [ $? -eq 0 ] ; then
       echo -e "\e[1A\e[K${OK} $pkg was installed."
     else
