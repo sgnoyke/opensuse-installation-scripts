@@ -13,10 +13,10 @@ if [ "$proceed" != "y" ]; then echo "${WARN} Installation aborted."; return -1; 
 # variables
 Q_NVIDIA="N"
 Q_BLUETOOTH="N"
-Q_SDDM=""
+Q_SDDM="N"
 
 # main part
-ask_yes_no "-Do you have nvidia gpu?" Q_NVIDIA-; echo
+ask_yes_no "-Do you have nvidia gpu?" Q_NVIDIA; echo
 ask_yes_no "-Do you want to configure Bluetooth?" Q_BLUETOOTH; echo
 ask_yes_no "-Install and configure SDDM log-in Manager?" Q_SDDM; echo
 
