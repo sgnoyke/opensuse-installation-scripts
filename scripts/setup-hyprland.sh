@@ -29,5 +29,5 @@ ask_yes_no "-Install and configure SDDM log-in Manager?" Q_SDDM; echo
 #execute_script "cliphist.sh"
 #execute_script "wlogout.sh"
 
-#setup_desktop_zypper_repos
-#install_hypr_dependencies
+setup_desktop_zypper_repos
+install_hypr_dependencies
