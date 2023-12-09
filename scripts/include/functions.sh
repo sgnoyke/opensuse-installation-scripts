@@ -207,6 +207,8 @@ install_package() {
   if "$norecommends"; then cmd="$cmd --no-recommends"; fi
   if "$ispattern"; then cmd="$cmd -t pattern"; fi
   
+  echo "$cmd"
+  
   if sudo zypper se -i "$pkg" &>> /dev/null ; then
     echo -e "${OK} $pkg is already installed. Skipping..."
   else
