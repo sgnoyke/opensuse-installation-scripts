@@ -234,7 +234,6 @@ installroot_base_packages() {
     xfsprogs
     zypper
     nano
-    shadow
     util-linux
     wicked
 	iputils
@@ -273,6 +272,7 @@ installroot_base_packages() {
     jq
     hwdata
     psmisc
+	shadow
   )
   
   for p in "${pkgs[@]}"; do
@@ -368,7 +368,7 @@ setup_system_user() {
 echo 'Add user ...'
 useradd ${sys_user} -m
 echo "$sys_user:$sys_user" | chpasswd
-adduser ${sys_user} sudo
+usermod -aG sudo ${sys_user}
 EOF
 }
 
