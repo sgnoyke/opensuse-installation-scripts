@@ -2,7 +2,7 @@
 
 if [ $EUID -eq 0 ]; then echo -e "${ERROR} This script should not be executed as root! Exiting ..."; exit 1; fi
 
-echo
+echo 
 echo "${GREEN}Welcome to OpenSUSE (Tumbleweed) - Minimal Bootstrap Script!$(tput sgr0)"
 echo
 echo "${WARN} ATTENTION: All data on hardrive will be wiped!! $(tput sgr0)"

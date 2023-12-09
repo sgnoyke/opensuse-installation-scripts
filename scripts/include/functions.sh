@@ -436,7 +436,6 @@ install_hypr_dependencies() {
   for p in "${pkgs[@]}"; do
     install_package "$p" true false false
   done
-  
   for p in "${opi_pkgs[@]}"; do
     install_package "$p" false false false
   done
