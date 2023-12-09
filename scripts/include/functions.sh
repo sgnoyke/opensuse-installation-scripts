@@ -90,28 +90,29 @@ quit(){
 ask_installation_device() {
   local response_var="$1"
   
-  echo "${NOTE} Available devices in /dev/:"
-  devices=($(lsblk -rno NAME,TYPE | awk '$2=="disk" {print "/dev/"$1}'))
-
-  if [ ${#devices[@]} -eq 0 ]; then
-    echo "${WARN} No devices found."
-    exit 1
-  fi
-  
-  for ((i=0; i<${#devices[@]}; i++)); do
-    echo "$i: ${devices[$i]}"
+  while true; do
+    echo "${NOTE} Available devices in /dev/:"
+    devices=($(lsblk -rno NAME,TYPE | awk '$2=="disk" {print "/dev/"$1}'))
+    
+    if [ ${#devices[@]} -eq 0 ]; then
+      echo "${WARN} No devices found."
+      exit 1
+    fi
+    
+    for ((i=0; i<${#devices[@]}; i++)); do
+      echo "$i: ${devices[$i]}"
+    done
+    
+    read -p "$(colorize_prompt "$CAT "  "Choose a device (enter a number): ")" choice
+    
+    if [[ ! $choice =~ ^[0-9]+$ ]] || ((choice < 0)) || ((choice >= ${#devices[@]})); then
+      echo "${WARN} Not valid number. Please choose a valid number."; echo
+    else
+	  eval "$response_var='${devices[$choice]}'"
+	  echo "${devices[$choice]}"
+	  return 0
+    fi
   done
-
-  read -p "$(colorize_prompt "$CAT "  "Choose a device (enter a number): ")" choice
-
-  if [[ ! $choice =~ ^[0-9]+$ ]] || ((choice < 0)) || ((choice >= ${#devices[@]})); then
-    echo "${WARN} Not valid number. Please choose a valid number."; echo
-    ask_installation_device response_var
-  else
-	eval "$response_var='${devices[$choice]}'"
-	echo "${devices[$choice]}"
-	return 0
-  fi
 }
 
 get_partition_names() {
