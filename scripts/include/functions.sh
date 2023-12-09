@@ -209,7 +209,7 @@ install_package() {
 
   cmd_chk="zypper -v -n"
   if "$installroot"; then cmd_chk="$cmd_chk --installroot /mnt"; fi
-  cmd_chk="$cmd_chk se -i"
+  cmd_chk="$cmd_chk se --match-exact -i"
   
   echo "$cmd_inst"
   echo "$cmd_chk"
