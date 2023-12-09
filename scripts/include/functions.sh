@@ -237,7 +237,6 @@ installroot_base_packages() {
 	systemd-network
 	systemd-portable
 	rng-tools
-	connman
 	lvm2
 	ntfs-3g
 	mdadm
