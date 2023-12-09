@@ -210,6 +210,9 @@ install_package() {
   cmd_chk="zypper -v -n"
   if "$installroot"; then cmd_chk="$cmd_chk --installroot /mnt"; fi
   cmd_chk="$cmd_chk se -i"
+  
+  echo "$cmd_inst"
+  echo "$cmd_chk"
     
   if sudo $cmd_chk "$pkg" &>> /dev/null ; then
     echo -e "${OK} $pkg is already installed. Skipping..."
