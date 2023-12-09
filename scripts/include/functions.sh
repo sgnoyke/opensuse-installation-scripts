@@ -328,48 +328,48 @@ setup_grub_config() {
 
 setup_grub() {
   local disk="$1"
-  
-  sudo chroot /mnt <<EOS
+
+  cat << EOF | sudo chroot /mnt
 dracut --regenerate-all --force
 grub2-install $disk
 grub2-mkconfig -o /boot/grub2/grub.cfg
 shim-install --config-file=/boot/grub2/grub.cfg
 efibootmgr
-EOS
+EOF
 }
 
 setup_root_user() {
-  sudo chroot /mnt <<EOS
+  cat << EOF | sudo chroot /mnt
 echo 'Setting root passphrase ...'
 echo 'root:root' | chpasswd
-EOS
+EOF
 }
 
 setup_common_services() {
-  sudo chroot /mnt <<EOS
+  cat << EOF | sudo chroot /mnt
 echo 'Enabling services ...'
 systemctl enable sshd
 systemctl enable NetworkManager
-EOS
+EOF
 }
 
 setup_locale_de() {
-  sudo chroot /mnt <<EOS
+  cat << EOF | sudo chroot /mnt
 echo 'Setting locale ...'
 zypper -v -n addlocale de_DE
 localectl set-locale LANG=de_DE.UTF-8
-EOS
+EOF
 }
 
 setup_system_user() {
   local sys_user="$1"
   
-  sudo chroot /mnt <<EOS
+  cat << EOF | sudo chroot /mnt
 echo 'Add user ...'
 useradd ${sys_user} -m
 echo "$sys_user:$sys_user" | chpasswd
 adduser ${sys_user} sudo
-EOS
+EOF
 }
 
 finish_script() {
