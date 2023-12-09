@@ -106,7 +106,7 @@ ask_installation_device() {
 
   if [[ ! $choice =~ ^[0-9]+$ ]] || ((choice < 0)) || ((choice >= ${#devices[@]})); then
     echo "${WARN} Not valid number. Please choose a valid number."; echo
-    ask_installation_device
+    ask_installation_device response_var
   else
 	eval "$response_var='${devices[$choice]}'"
 	echo "${devices[$choice]}"
@@ -290,7 +290,7 @@ setup_firstboot() {
     --locale-messages="de_DE.UTF-8" \
     --timezone="Europe/Berlin" \
     --hostname="zero" \
-    --locale=de_DE.UTF-8 \
+    --locale="de_DE.UTF-8" \
     --setup-machine-id \
   --welcome=false
 }
