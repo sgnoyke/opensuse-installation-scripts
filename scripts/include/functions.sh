@@ -233,8 +233,24 @@ installroot_base_packages() {
     btrfsprogs
     xfsprogs
     zypper
-    nano
+	systemd-coredump
+	systemd-network
+	systemd-portable
+	rng-tools
+	connman
+	lvm2
+	ntfs-3g
+	mdadm
+	cifs-utils
+	rpcbind
+	nvme-cli
+	nvme-cli-bash-completion
+	nvme-cli-zsh-completion
+	openssh
+	biosdevname
+	dbus-broker
     util-linux
+    nano
 	iputils
     openssh-server
     dmraid
