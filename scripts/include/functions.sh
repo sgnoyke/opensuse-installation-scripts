@@ -131,8 +131,8 @@ get_partition_names() {
 wipe_disk() {
   local disk="$1"
   
-  sudo wipefs -a ${disk}
-  sudo wipefs --all -t btrfs ${disk}
+  sudo wipefs -a ${disk} -f
+  sudo wipefs --all -t btrfs ${disk} -f
   sudo dd if=/dev/zero of=${disk} bs=4M count=1
   echo -e "g\nn\n1\n\n+512M\nn\n2\n\n\nt\n1\n1\nw\n" | sudo fdisk -w always -W always ${disk}
   return 0
@@ -227,12 +227,12 @@ install_package() {
 installroot_base_packages() {
   printf "\n%s - Installing base packages... \n" "${NOTE}"
   pkgs=(
+    opi
+	grub2-x86_64-efi
+	kernel-default
     btrfsprogs
     xfsprogs
-    kernel-default
-    grub2-x86_64-efi
     zypper
-	opi
     nano
     shadow
     util-linux
