@@ -329,7 +329,7 @@ setup_grub_config() {
 setup_grub() {
   local disk="$1"
 
-  cat << EOF | sudo chroot /mnt
+  sudo chroot /mnt /bin/bash << EOF
 dracut --regenerate-all --force
 grub2-install $disk
 grub2-mkconfig -o /boot/grub2/grub.cfg
@@ -339,14 +339,14 @@ EOF
 }
 
 setup_root_user() {
-  cat << EOF | sudo chroot /mnt
+  sudo chroot /mnt /bin/bash << EOF
 echo 'Setting root passphrase ...'
 echo 'root:root' | chpasswd
 EOF
 }
 
 setup_common_services() {
-  cat << EOF | sudo chroot /mnt
+  sudo chroot /mnt /bin/bash << EOF
 echo 'Enabling services ...'
 systemctl enable sshd
 systemctl enable NetworkManager
@@ -354,7 +354,7 @@ EOF
 }
 
 setup_locale_de() {
-  cat << EOF | sudo chroot /mnt
+  sudo chroot /mnt /bin/bash << EOF
 echo 'Setting locale ...'
 zypper -v -n addlocale de_DE
 localectl set-locale LANG=de_DE.UTF-8
@@ -364,7 +364,7 @@ EOF
 setup_system_user() {
   local sys_user="$1"
   
-  cat << EOF | sudo chroot /mnt
+  sudo chroot /mnt /bin/bash << EOF
 echo 'Add user ...'
 useradd ${sys_user} -m
 echo "$sys_user:$sys_user" | chpasswd
