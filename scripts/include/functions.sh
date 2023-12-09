@@ -368,7 +368,6 @@ setup_system_user() {
 echo 'Add user ...'
 useradd ${sys_user} -m
 echo "$sys_user:$sys_user" | chpasswd
-usermod -aG sudo ${sys_user}
 EOF
 }
 
