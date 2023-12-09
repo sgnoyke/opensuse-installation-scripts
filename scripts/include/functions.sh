@@ -236,6 +236,8 @@ installroot_base_packages() {
 	systemd-coredump
 	systemd-network
 	systemd-portable
+	system-group-wheel
+	system-user-mail
 	rng-tools
 	lvm2
 	ntfs-3g
