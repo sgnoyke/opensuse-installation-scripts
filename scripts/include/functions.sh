@@ -142,7 +142,7 @@ format_partitions() {
   local rootpart="$2"
 
   sudo mkfs.fat -F32 ${efipart}
-  sudo mkfs.btrfs ${rootpart}
+  sudo mkfs.btrfs -f ${rootpart}
   return 0
 }
 

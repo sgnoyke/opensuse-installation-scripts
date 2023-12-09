@@ -40,8 +40,8 @@ mount_additional_dirs
 setup_etc
 setup_firstboot
 setup_fstab ${EFI_PARTITION} ${ROOT_PARTITION}
-exit 1
 setup_grub_config
+exit 1
 setup_grub ${DISK}
 setup_root_user
 setup_common_services
