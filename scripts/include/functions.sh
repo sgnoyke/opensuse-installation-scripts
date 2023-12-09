@@ -132,7 +132,8 @@ wipe_disk() {
   local disk="$1"
   
   sudo wipefs -a ${disk}
-  sudo dd if=/dev/zero of=${disk} bs=446 count=1
+  sudo wipefs --all -t btrfs ${disk}
+  sudo dd if=/dev/zero of=${disk} bs=4M count=1
   echo -e "g\nn\n1\n\n+512M\nn\n2\n\n\nt\n1\n1\nw\n" | sudo fdisk -w always -W always ${disk}
   return 0
 }

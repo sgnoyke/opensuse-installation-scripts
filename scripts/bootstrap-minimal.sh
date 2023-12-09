@@ -41,8 +41,9 @@ setup_etc
 setup_firstboot
 setup_fstab ${EFI_PARTITION} ${ROOT_PARTITION}
 setup_grub_config
-exit 1
 setup_grub ${DISK}
+exit 1
+
 setup_root_user
 setup_common_services
 setup_locale_de
