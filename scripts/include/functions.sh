@@ -238,6 +238,7 @@ installroot_base_packages() {
 	systemd-portable
 	system-group-wheel
 	system-user-mail
+	vim
 	rng-tools
 	lvm2
 	ntfs-3g
@@ -350,6 +351,9 @@ grub2-install $disk
 grub2-mkconfig -o /boot/grub2/grub.cfg
 shim-install --config-file=/boot/grub2/grub.cfg
 efibootmgr
+echo ':wq' | visudo 2>/dev/null
+sed -i -e 's/^#.*%wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
+echo 'Defaults !targetpw' >/etc/sudoers.d/userpw
 EOF
 }
 
@@ -383,6 +387,7 @@ setup_system_user() {
 echo 'Add user ...'
 useradd ${sys_user} -m
 echo "$sys_user:$sys_user" | chpasswd
+usermod -a -G wheel $sys_user
 EOF
 }
 
