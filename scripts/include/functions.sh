@@ -293,7 +293,7 @@ setup_firstboot() {
     --hostname="zero" \
     --locale="de_DE.UTF-8" \
     --setup-machine-id \
-  --welcome=false
+    --welcome=false
 }
 
 setup_fstab() {
