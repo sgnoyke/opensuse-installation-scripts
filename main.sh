@@ -67,7 +67,7 @@ check(){
 suse(){
     case $1 in
         Minimal) source_script "scripts/bootstrap-minimal.sh" ;;
-        Hyprland) "scripts/setup-hyprland.sh" ;;
+        Hyprland) source_script "scripts/setup-hyprland.sh" ;;
         *) helpme 4
     esac
 }
