@@ -166,6 +166,8 @@ install_hyprland() {
   remove_package xdg-desktop-portal-wlr
   remove_package xdg-desktop-portal-lxqt
   
+  add_user_to_group "$(whoami)" "input"
+  
   return 0
 }
 

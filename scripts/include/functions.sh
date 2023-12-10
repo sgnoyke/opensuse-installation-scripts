@@ -670,3 +670,13 @@ remove_package() {
   fi
   return 0
 }
+
+add_user_to_group() {
+  local sys_user="$1"
+  local grp="$2"
+  if ! grep -q '^input:' /etc/group; then
+    echo "${NOTE} Creating group: $grp..."
+    sudo groupadd "$grp"
+  fi
+  sudo usermod -aG "$grp" "$sys_user"
+}
