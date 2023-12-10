@@ -118,13 +118,31 @@ install_nwg_look() {
   return 0
 }
 
+install_swaylock_effects() {
+  printf "\n%s - Installing swaylock-effects... \n" "${NOTE}"
+  pkgs=(
+    swaylock-effects
+  )
+  
+  for p in "${pkgs[@]}"; do
+    install_opi_package "$p"
+  done
+  return 0
+}
+
+install_cliphist() {
+  printf "\n%s - Installing cliphist (clipboard Manager)... \n" "${NOTE}"
+  export PATH=$PATH:/usr/local/bin
+  go install go.senan.xyz/cliphist@latest
+  sudo cp -r "$HOME/go/bin/cliphist" "/usr/local/bin/"
+  return 0
+}
+
 # main part
 ask_yes_no "-Do you have nvidia gpu?" Q_NVIDIA; echo
 ask_yes_no "-Do you want to configure Bluetooth?" Q_BLUETOOTH; echo
 ask_yes_no "-Install and configure SDDM log-in Manager?" Q_SDDM; echo
 
-#execute_script "nwg-look.sh"
-#execute_script "swaylock-effects.sh"
 #execute_script "cliphist.sh"
 #execute_script "wlogout.sh"
 
@@ -133,6 +151,8 @@ install_hypr_dependencies
 install_hypr_packages
 setup_desktop_fonts
 install_nwg_look
+install_swaylock_effects
+install_cliphist
 xdg-user-dirs-update 
 finish_script
 press_enter_and_continue
