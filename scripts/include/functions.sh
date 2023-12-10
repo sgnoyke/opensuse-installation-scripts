@@ -520,7 +520,7 @@ download_and_extract() {
 
   case "$extension" in
     zip)
-      unzip -q "$temp_dir/$filename" -d "$dest_dir"
+      unzip -q -o "$temp_dir/$filename" -d "$dest_dir"
       ;;
     bz2 | gz | xz)
       tar -xf "$temp_dir/$filename" -C "$dest_dir"

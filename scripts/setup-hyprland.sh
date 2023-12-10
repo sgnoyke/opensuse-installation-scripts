@@ -176,11 +176,11 @@ install_swaylock_effects
 install_cliphist
 install_wlogout
 xdg-user-dirs-update 
-finish_script
 [ "$Q_NVIDIA" == "Y" ] && install_nvidia
 install_hyprland
 install_gtk_themes
 [ "$Q_BLUETOOTH" == "Y" ] && install_bluetooth
 install_thunar
 
+finish_script
 press_enter_and_continue
