@@ -432,7 +432,6 @@ setup_desktop_fonts() {
     fira-code-fonts
     fontawesome-fonts
     google-droid-fonts
-    google-noto-sans-fonts
     google-noto-coloremoji-fonts
     liberation-fonts
     noto-sans-mono-fonts
