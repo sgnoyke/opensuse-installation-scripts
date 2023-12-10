@@ -150,6 +150,18 @@ install_wlogout() {
   return 0
 }
 
+install_hyprland() {
+  printf "\n%s - Installing Hyprland package... \n" "${NOTE}"
+  pkgs=(
+    hyprland
+  )
+  
+  for p in "${pkgs[@]}"; do
+    install_package "$p" false false false
+  done
+  return 0
+}
+
 # main part
 ask_yes_no "-Do you have nvidia gpu?" Q_NVIDIA; echo
 ask_yes_no "-Do you want to configure Bluetooth?" Q_BLUETOOTH; echo
@@ -166,3 +178,5 @@ install_wlogout
 xdg-user-dirs-update 
 finish_script
 press_enter_and_continue
+[ "$Q_NVIDIA" == "Y" ] && install_nvidia
+install_hyprland

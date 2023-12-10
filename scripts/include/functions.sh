@@ -203,7 +203,7 @@ install_package() {
   
   cmd_inst="zypper -v -n"
   if "$installroot"; then cmd_inst="$cmd_inst --installroot /mnt"; fi
-  cmd_inst="$cmd_inst --gpg-auto-import-keys install --download-in-advance -l -y"
+  cmd_inst="$cmd_inst --gpg-auto-import-keys install --auto-agree-with-licenses --download-in-advance -l -y"
   if "$norecommends"; then cmd_inst="$cmd_inst --no-recommends"; fi
   if "$ispattern"; then cmd_inst="$cmd_inst -t pattern"; fi
 
@@ -458,5 +458,45 @@ install_desktop_fonts() {
   for p in "${pkgs[@]}"; do
     install_package "$p" false false false
   done
+  return 0
+}
+
+install_nvidia() {
+  printf "\n%s - Installing Nvidia packages... \n" "${NOTE}"
+  nvidia_pkg=(
+    openSUSE-repos-NVIDIA
+    dkms
+    libvdpau1
+    libva-vdpau-driver
+    libva-utils
+    libglvnd
+    libglvnd-devel
+    Mesa-libva
+    xf86-video-nv
+  )
+
+  nvidia_drivers=(
+    nvidia-driver-G06
+    nvidia-driver-G06-kmp-default
+    nvidia-video-G06
+    nvidia-gl-G06
+    nvidia-utils-G06
+  )
+  
+  for p in "${nvidia_pkg[@]}" "${nvidia_drivers[@]}"; do
+    install_package "$p" false false false
+  done
+  
+  printf "\n%s - Adding nvidia-stuff to /etc/default/grub... \n" "${NOTE}"
+  additional_options="rd.driver.blacklist=nouveau modprobe.blacklist=nouveau nvidia-drm.modeset=1"
+  if grep -q "GRUB_CMDLINE_LINUX.*$additional_options" /etc/default/grub; then
+    echo "GRUB_CMDLINE_LINUX already contains the additional options"
+  else
+    sudo sed -i "s/GRUB_CMDLINE_LINUX=\"/GRUB_CMDLINE_LINUX=\"$additional_options /" /etc/default/grub
+    echo "Added the additional options to GRUB_CMDLINE_LINUX"
+  fi
+  sudo grub2-mkconfig -o /boot/grub2/grub.cfg
+  echo "Nvidia DRM modeset and additional options have been added to /etc/default/grub. Please reboot for changes to take effect."
+  
   return 0
 }
