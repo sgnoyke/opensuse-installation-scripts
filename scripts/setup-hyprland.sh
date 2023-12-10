@@ -189,7 +189,7 @@ EOF
 # main part
 ask_yes_no "-Do you have nvidia gpu?" Q_NVIDIA; echo
 ask_yes_no "-Do you want to configure Bluetooth?" Q_BLUETOOTH; echo
-ask_yes_no "-Install and configure SDDM log-in Manager?" Q_SDDM; echo
+ask_yes_no "-Install and configure sddm log-in Manager?" Q_SDDM; echo
 
 setup_desktop_zypper_repos
 install_hypr_dependencies
