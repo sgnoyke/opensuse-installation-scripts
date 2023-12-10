@@ -180,3 +180,4 @@ finish_script
 press_enter_and_continue
 [ "$Q_NVIDIA" == "Y" ] && install_nvidia
 install_hyprland
+install_gtk_themes
