@@ -651,16 +651,6 @@ install_sddm() {
   sddm_conf_dir=/etc/sddm.conf.d
   [ ! -d "$sddm_conf_dir" ] && { printf "$CAT - $sddm_conf_dir not found, creating...\n"; sudo mkdir -p "$sddm_conf_dir" 2>&1; }
   
-  wayland_sessions_dir=/usr/share/wayland-sessions
-  [ ! -d "$wayland_sessions_dir" ] && { printf "$CAT - $wayland_sessions_dir not found, creating...\n"; sudo mkdir -p "$wayland_sessions_dir" 2>&1; }
-  sudo tee "$wayland_sessions_dir/hyprland.desktop" <<EOF
-[Desktop Entry]
-Name=Hyprland
-Comment=An intelligent dynamic tiling Wayland compositor
-Exec=Hyprland
-Type=Application
-EOF
-
   printf "\n%s - Installing Tokyo sddm theme\n" "${NOTE}"
   [ -d "/usr/share/sddm/themes/tokyo-night-sddm" ] && sudo rm -rf /usr/share/sddm/themes/tokyo-night-sddm
   sudo git clone https://github.com/rototrash/tokyo-night-sddm.git /usr/share/sddm/themes/tokyo-night-sddm 2>&1

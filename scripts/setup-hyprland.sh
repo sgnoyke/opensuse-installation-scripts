@@ -162,6 +162,21 @@ install_hyprland() {
   return 0
 }
 
+setup_hyprland_wayland_session_config() {
+  printf "\n%s - Setting up Hyprland wayland session configuration... \n" "${NOTE}"
+  wayland_sessions_dir=/usr/share/wayland-sessions
+  [ ! -d "$wayland_sessions_dir" ] && { printf "$CAT - $wayland_sessions_dir not found, creating...\n"; sudo mkdir -p "$wayland_sessions_dir" 2>&1; }
+  sudo tee "$wayland_sessions_dir/hyprland.desktop" <<EOF
+[Desktop Entry]
+Name=Hyprland
+Comment=An intelligent dynamic tiling Wayland compositor
+Exec=Hyprland
+Type=Application
+EOF
+
+  return 0
+}
+
 # main part
 ask_yes_no "-Do you have nvidia gpu?" Q_NVIDIA; echo
 ask_yes_no "-Do you want to configure Bluetooth?" Q_BLUETOOTH; echo
@@ -181,7 +196,7 @@ install_hyprland
 install_gtk_themes
 [ "$Q_BLUETOOTH" == "Y" ] && install_bluetooth
 install_thunar
-[ "$Q_SDDM" == "Y" ] && install_sddm
+[ "$Q_SDDM" == "Y" ] && install_sddm && setup_hyprland_wayland_session_config
 
 finish_script
 press_enter_and_continue
