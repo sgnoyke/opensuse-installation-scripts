@@ -138,13 +138,22 @@ install_cliphist() {
   return 0
 }
 
+install_wlogout() {
+  printf "\n%s - Installing wlogout... \n" "${NOTE}"
+  pkgs=(
+    wlogout
+  )
+  
+  for p in "${pkgs[@]}"; do
+    install_opi_package "$p"
+  done
+  return 0
+}
+
 # main part
 ask_yes_no "-Do you have nvidia gpu?" Q_NVIDIA; echo
 ask_yes_no "-Do you want to configure Bluetooth?" Q_BLUETOOTH; echo
 ask_yes_no "-Install and configure SDDM log-in Manager?" Q_SDDM; echo
-
-#execute_script "cliphist.sh"
-#execute_script "wlogout.sh"
 
 setup_desktop_zypper_repos
 install_hypr_dependencies
@@ -153,6 +162,7 @@ setup_desktop_fonts
 install_nwg_look
 install_swaylock_effects
 install_cliphist
+install_wlogout
 xdg-user-dirs-update 
 finish_script
 press_enter_and_continue
