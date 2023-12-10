@@ -277,6 +277,7 @@ installroot_base_packages() {
     ca-certificates-cacert
     lsof
     shim
+	chezmoi
     git
     NetworkManager
     aaa_base
