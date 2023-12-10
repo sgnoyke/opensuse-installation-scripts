@@ -662,7 +662,7 @@ Type=Application
 EOF
 
   printf "\n%s - Installing Tokyo sddm theme\n" "${NOTE}"
-  [ -d "/usr/share/sddm/themes/tokyo-night-sddm" ] && rm -rf /usr/share/sddm/themes/tokyo-night-sddm
+  [ -d "/usr/share/sddm/themes/tokyo-night-sddm" ] && sudo rm -rf /usr/share/sddm/themes/tokyo-night-sddm
   sudo git clone https://github.com/rototrash/tokyo-night-sddm.git /usr/share/sddm/themes/tokyo-night-sddm 2>&1
   sudo tee "$sddm_conf_dir/10-theme.conf" <<EOF
 [Theme]
