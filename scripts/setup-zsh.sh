@@ -33,6 +33,7 @@ install_zsh_packages() {
 
 install_ohmyzsh_packages() {
   printf "\n%s - Installing oh-my-zsh packages... \n" "${NOTE}"
+  rm -rf ${ZSH_CUSTOM:-~/.oh-my-zsh}
   sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
   git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
   git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
@@ -41,7 +42,7 @@ install_ohmyzsh_packages() {
 
 set_zsh_as_default_shell() {
   printf "\n%s - Setting zsh as default shell for $USER... \n" "${NOTE}"
-  chsh -s $(which zsh) $USER
+  sudo chsh -s $(which zsh) $USER
   return 0
 }
 
