@@ -67,7 +67,7 @@ install_hypr_packages() {
     python311-pywal
     qt5ct
     qt6ct
-    qt6-svg
+    qt6-svg-devel
     rofi-wayland
     slurp
     swappy
@@ -120,6 +120,7 @@ ask_yes_no "-Install and configure SDDM log-in Manager?" Q_SDDM; echo
 setup_desktop_zypper_repos
 install_hypr_dependencies
 install_hypr_packages
+setup_desktop_fonts
 xdg-user-dirs-update 
 finish_script
 press_enter_and_continue

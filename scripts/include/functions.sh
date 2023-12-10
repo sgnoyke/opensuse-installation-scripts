@@ -424,3 +424,24 @@ setup_desktop_zypper_repos() {
   sudo zypper --gpg-auto-import-keys ref -f
   sudo zypper -n dup --from packman --allow-vendor-change
 }
+
+setup_desktop_fonts() {
+  printf "\n%s - Installing fonts... \n" "${NOTE}"
+  pkgs=(
+    adobe-sourcecodepro-fonts
+    fira-code-fonts
+    fontawesome-fonts
+    google-droid-fonts
+    google-noto-sans-fonts
+    google-noto-coloremoji-fonts
+    liberation-fonts
+    noto-sans-mono-fonts
+    symbols-only-nerd-fonts
+    xorg-x11-fonts-core
+  )
+  
+  for p in "${pkgs[@]}"; do
+    install_package "$p" false false false
+  done
+  return 0
+}
