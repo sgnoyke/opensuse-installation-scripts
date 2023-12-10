@@ -181,7 +181,7 @@ install_hyprland
 install_gtk_themes
 [ "$Q_BLUETOOTH" == "Y" ] && install_bluetooth
 install_thunar
-install_sddm
+[ "$Q_SDDM" == "Y" ] && install_sddm
 
 finish_script
 press_enter_and_continue
