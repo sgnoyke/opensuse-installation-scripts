@@ -391,9 +391,12 @@ usermod -a -G wheel $sys_user
 EOF
 }
 
-finish_script() {
+finish_mounts() {
   sudo swapoff /mnt/.swap/swapfile
   sudo umount -R /mnt
+}
+
+finish_script() {
   echo "${GREEN}Finished.$(tput sgr0)"; echo
 }
 
@@ -420,24 +423,4 @@ setup_desktop_zypper_repos() {
   sudo zypper -n --quiet ar --refresh -Gfp 80 obs://network:vpn:wireguard wireguard
   sudo zypper --gpg-auto-import-keys ref -f
   sudo zypper -n dup --from packman --allow-vendor-change
-}
-
-install_hypr_dependencies() {
-  printf "\n%s - Installing dependencies... \n" "${NOTE}"
-  pkgs=(
-    devel_basis
-  )
-  
-  opi_pkgs=(
-    opi
-	go
-  )
-  
-  for p in "${pkgs[@]}"; do
-    install_package "$p" true false false
-  done
-  for p in "${opi_pkgs[@]}"; do
-    install_package "$p" false false false
-  done
-  return 0
 }

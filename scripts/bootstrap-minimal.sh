@@ -46,5 +46,6 @@ setup_root_user
 setup_common_services
 setup_locale_de
 setup_system_user ${SYS_USER}
+finish_mounts
 finish_script
 reboot_system

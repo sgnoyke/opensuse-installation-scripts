@@ -15,14 +15,102 @@ Q_NVIDIA="N"
 Q_BLUETOOTH="N"
 Q_SDDM="N"
 
+# functions
+install_hypr_dependencies() {
+  printf "\n%s - Installing basic dependencies... \n" "${NOTE}"
+  pkgs=(
+    devel_basis
+  )
+  
+  opi_pkgs=(
+    opi
+	go
+  )
+  
+  for p in "${pkgs[@]}"; do
+    install_package "$p" true false false
+  done
+  for p in "${opi_pkgs[@]}"; do
+    install_package "$p" false false false
+  done
+  return 0
+}
+
+install_hypr_packages() {
+  printf "\n%s - Installing hyprland packages... \n" "${NOTE}"
+  pkgs_extras=(
+  )
+  
+  pkgs=(
+    curl
+    dunst
+    git
+    go
+    grim
+    gvfs
+    gvfs-backends
+    ImageMagick
+    jq
+    kitty
+    kvantum-qt6
+    kvantum-themes
+    kvantum-manager
+    libnotify-tools
+    nano
+    openssl
+    pamixer
+    pavucontrol
+    playerctl  
+    polkit-gnome
+    python311-requests
+    python311-pip
+    python311-pywal
+    qt5ct
+    qt6ct
+    qt6-svg
+    rofi-wayland
+    slurp
+    swappy
+    swayidle
+    swww
+    wget
+    wayland-protocols-devel
+    wl-clipboard
+    xdg-user-dirs
+    xwayland
+    brightnessctl
+    btop
+    cava
+    mousepad
+    mpv
+    mpv-mpris
+    nvtop
+    vim
+    wlsunset
+    yad
+  )
+  
+  pkgs_no_recommends=(
+    waybar
+    eog
+    gnome-system-monitor
+    NetworkManager-applet
+  )
+  
+  for p in "${pkgs[@]}" "${pkgs_extras[@]}"; do
+    install_package "$p" false false false
+  done
+  for p in "${pkgs_no_recommends[@]}"; do
+    install_package "$p" false false true
+  done
+  return 0
+}
+
 # main part
 ask_yes_no "-Do you have nvidia gpu?" Q_NVIDIA; echo
 ask_yes_no "-Do you want to configure Bluetooth?" Q_BLUETOOTH; echo
 ask_yes_no "-Install and configure SDDM log-in Manager?" Q_SDDM; echo
 
-#execute_script "00-packman.sh"
-#execute_script "01-dependencies.sh"
-#execute_script "02-hypr-pkgs.sh"
 #execute_script "fonts.sh"
 #execute_script "nwg-look.sh"
 #execute_script "swaylock-effects.sh"
@@ -31,3 +119,7 @@ ask_yes_no "-Install and configure SDDM log-in Manager?" Q_SDDM; echo
 
 setup_desktop_zypper_repos
 install_hypr_dependencies
+install_hypr_packages
+xdg-user-dirs-update 
+finish_script
+press_enter_and_continue
