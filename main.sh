@@ -4,7 +4,7 @@ source <(curl -H 'Cache-Control: no-cache' -s https://raw.githubusercontent.com/
 
 menu=( Bootstrap ExtendSystem )
 Bootstrap=( Minimal )
-ExtendSystem=( Hyprland )
+ExtendSystem=( Hyprland Zsh )
 
 displayInfo(){
     echo -e "${BLUE}"
@@ -66,8 +66,9 @@ check(){
 
 suse(){
     case $1 in
-        Minimal) source_script "scripts/bootstrap-minimal.sh";;
-        Hyprland) source_script "scripts/setup-hyprland.sh";;
+        Minimal) source_script "scripts/bootstrap-minimal.sh" ;;
+        Hyprland) source_script "scripts/setup-hyprland.sh" ;;
+        Zsh) source_script "scripts/setup-zsh.sh" ;;
         *) helpme 4
     esac
 }
