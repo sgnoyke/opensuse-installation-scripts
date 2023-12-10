@@ -581,7 +581,7 @@ install_gtk_themes() {
 }
 
 install_bluetooth() {
-  printf "${NOTE} Installing bluetooth packages...\n"
+  printf "\n%s - Installing bluetooth packages... \n" "${NOTE}"
   pkgs=(
     bluez
     blueman
@@ -615,5 +615,55 @@ install_thunar() {
   for p in "${pkgs_no_recommends[@]}"; do
     install_package "$p" false false true
   done
+  return 0
+}
+
+install_sddm() {
+  printf "\n%s - Installing sddm packages... \n" "${NOTE}"
+
+  pkgs_no_recommends=(
+    sddm-qt6
+    xauth
+    xorg-x11-server
+    xf86-input-evdev
+    libqt5-qtgraphicaleffects
+    libqt5-qtquickcontrols
+    libqt5-qtquickcontrols2
+  )
+  
+  for p in "${pkgs_no_recommends[@]}"; do
+    install_package "$p" false false true
+  done
+  
+  for login_manager in lightdm gdm lxdm lxdm-gtk3; do
+    if sudo  zypper se --match-exact -i "$login_manager" &>> /dev/null; then
+      echo "Disabling $login_manager..."
+      sudo systemctl disable "$login_manager" 2>&1
+    fi
+  done
+  
+  printf " Activating sddm service...\n"
+  sudo systemctl set-default graphical.target 2>&1
+  sudo update-alternatives --set default-displaymanager /usr/lib/X11/displaymanagers/sddm 2>&1
+  sudo systemctl enable sddm.service 2>&1
+
+  echo -e "${NOTE} Setting up the login screen."
+  sddm_conf_dir=/etc/sddm.conf.d
+  [ ! -d "$sddm_conf_dir" ] && { printf "$CAT - $sddm_conf_dir not found, creating...\n"; sudo mkdir -p "$sddm_conf_dir" 2>&1; }
+  
+  wayland_sessions_dir=/usr/share/wayland-sessions
+  [ ! -d "$wayland_sessions_dir" ] && { printf "$CAT - $wayland_sessions_dir not found, creating...\n"; sudo mkdir -p "$wayland_sessions_dir" 2>&1; }
+  sudo cat <<EOF > "$wayland_sessions_dir/hyprland.desktop"
+[Desktop Entry]
+Name=Hyprland
+Comment=An intelligent dynamic tiling Wayland compositor
+Exec=Hyprland
+Type=Application
+EOF
+
+  printf "\n%s - Installing Tokyo sddm theme\n" "${NOTE}"
+  sudo git clone https://github.com/rototrash/tokyo-night-sddm.git /usr/share/sddm/themes/tokyo-night-sddm 2>&1
+  echo -e "[Theme]\nCurrent=tokyo-night-sddm" | sudo tee -a "$sddm_conf_dir/10-theme.conf" 2>&1             		
+
   return 0
 }
