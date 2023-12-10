@@ -12,6 +12,7 @@ if [ "$proceed" != "y" ]; then echo "${WARN} Installation aborted."; return -1; 
 
 # variables
 Q_OHMYZSH="N"
+Q_SET_AS_DEFAULT_SHELL="N"
 
 # functions
 install_zsh_packages() {
@@ -38,11 +39,19 @@ install_ohmyzsh_packages() {
   return 0
 }
 
+set_zsh_as_default_shell() {
+  printf "\n%s - Setting zsh as default shell for $USER... \n" "${NOTE}"
+  chsh -s $(which zsh) $USER
+  return 0
+}
+
 # main part
 ask_yes_no "-Would you like to install oh-my-zsh?" Q_OHMYZSH; echo
+ask_yes_no "-Would you like to set zsh as default shell for your user?" Q_SET_AS_DEFAULT_SHELL; echo
 
 install_zsh_packages
 [ "$Q_OHMYZSH" == "Y" ] && install_ohmyzsh_packages
+[ "$Q_SET_AS_DEFAULT_SHELL" == "Y" ] && set_zsh_as_default_shell
 
 finish_script
 press_enter_and_continue
