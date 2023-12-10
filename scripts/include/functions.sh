@@ -490,13 +490,13 @@ install_nvidia() {
   printf "\n%s - Adding nvidia-stuff to /etc/default/grub... \n" "${NOTE}"
   additional_options="rd.driver.blacklist=nouveau modprobe.blacklist=nouveau nvidia-drm.modeset=1"
   if grep -q "GRUB_CMDLINE_LINUX.*$additional_options" /etc/default/grub; then
-    echo "GRUB_CMDLINE_LINUX already contains the additional options"
+    echo "${NOTE} GRUB_CMDLINE_LINUX already contains the additional options.$(tput sgr0)"
   else
     sudo sed -i "s/GRUB_CMDLINE_LINUX=\"/GRUB_CMDLINE_LINUX=\"$additional_options /" /etc/default/grub
-    echo "Added the additional options to GRUB_CMDLINE_LINUX"
+	echo "${NOTE} Added the additional options to GRUB_CMDLINE_LINUX.$(tput sgr0)"
   fi
   sudo grub2-mkconfig -o /boot/grub2/grub.cfg
-  echo "Nvidia DRM modeset and additional options have been added to /etc/default/grub. Please reboot for changes to take effect."
+  echo "${NOTE} Nvidia DRM modeset and additional options have been added to /etc/default/grub. Please reboot for changes to take effect.$(tput sgr0)"
   
   return 0
 }
@@ -526,10 +526,34 @@ download_and_extract() {
       tar -xf "$temp_dir/$filename" -C "$dest_dir"
       ;;
     *)
-      echo "Extension $extension not supported."
+      echo "${WARN} Extension $extension not supported."
       ;;
   esac
   rm -rf "$temp_dir"
+}
+
+copy_with_backup() {
+  source_path="$1"
+  destination_path="$2"
+
+  if [ -e "$destination_path" ]; then
+    timestamp=$(date +"%Y%m%d%H%M%S")
+    backup_filename="${destination_path}-backup-${timestamp}.zip"
+    
+    echo "${NOTE} Backing up $destination_path to $backup_filename...$(tput sgr0)"
+    zip -r "$backup_filename" "$destination_path" >/dev/null 2>&1
+    
+    if [ $? -eq 0 ]; then
+      echo "${NOTE} Backup successfully created at: $backup_filename.$(tput sgr0)"
+    else
+      echo "${ERROR} Backup failed.$(tput sgr0)"
+      return 1
+    fi
+  fi
+
+  echo "${NOTE} Copy $source_path to $destination_path.$(tput sgr0)"
+  cp -r "$source_path" "$destination_path" && echo "Kopieren von $source_path abgeschlossen!" \
+    || echo "${ERROR} Copy from $source_path failed.$(tput sgr0)" 2>&1
 }
 
 install_gtk_themes() {
@@ -553,5 +577,43 @@ install_gtk_themes() {
   printf "\n%s - Installing Bibata-Modern-Ice Theme GTK package... \n" "${NOTE}"
   download_and_extract "https://raw.githubusercontent.com/sgnoyke/opensuse-installation-scripts/main/assets/Bibata-Modern-Ice.tar.xz" "${HOME}/.icons"
 
+  return 0
+}
+
+install_bluetooth() {
+  printf "${NOTE} Installing bluetooth packages...\n"
+  pkgs=(
+    bluez
+    blueman
+  )
+  
+  for p in "${pkgs[@]}"; do
+    install_package "$p" false false false
+  done
+  return 0
+}
+
+install_thunar() {
+  printf "\n%s - Installing thunar packages... \n" "${NOTE}"
+  pkgs_extras=(
+  )
+  
+  pkgs=(
+    thunar-volman 
+    tumbler 
+    thunar-plugin-archive
+  )
+  
+  pkgs_no_recommends=(
+    thunar
+    file-roller
+  )
+  
+  for p in "${pkgs[@]}" "${pkgs_extras[@]}"; do
+    install_package "$p" false false false
+  done
+  for p in "${pkgs_no_recommends[@]}"; do
+    install_package "$p" false false true
+  done
   return 0
 }
