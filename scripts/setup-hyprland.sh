@@ -22,7 +22,7 @@ install_hypr_dependencies() {
     devel_basis
   )
   
-  opi_pkgs=(
+  pkgs_opi=(
     opi
 	go
   )
@@ -30,7 +30,7 @@ install_hypr_dependencies() {
   for p in "${pkgs[@]}"; do
     install_package "$p" true false false
   done
-  for p in "${opi_pkgs[@]}"; do
+  for p in "${pkgs_opi[@]}"; do
     install_package "$p" false false false
   done
   return 0
@@ -106,12 +106,23 @@ install_hypr_packages() {
   return 0
 }
 
+install_nwg_look() {
+  printf "\n%s - Installing nwg-look... \n" "${NOTE}"
+  pkgs=(
+    nwg-look
+  )
+  
+  for p in "${pkgs[@]}"; do
+    install_opi_package "$p"
+  done
+  return 0
+}
+
 # main part
 ask_yes_no "-Do you have nvidia gpu?" Q_NVIDIA; echo
 ask_yes_no "-Do you want to configure Bluetooth?" Q_BLUETOOTH; echo
 ask_yes_no "-Install and configure SDDM log-in Manager?" Q_SDDM; echo
 
-#execute_script "fonts.sh"
 #execute_script "nwg-look.sh"
 #execute_script "swaylock-effects.sh"
 #execute_script "cliphist.sh"
@@ -121,6 +132,7 @@ setup_desktop_zypper_repos
 install_hypr_dependencies
 install_hypr_packages
 setup_desktop_fonts
+install_nwg_look
 xdg-user-dirs-update 
 finish_script
 press_enter_and_continue

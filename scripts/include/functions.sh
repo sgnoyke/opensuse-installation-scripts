@@ -224,6 +224,22 @@ install_package() {
   fi
 }
 
+install_opi_package() {
+  local pkg="$1"
+    
+  if sudo zypper -v -n se --match-exact -i "$pkg" &>> /dev/null ; then
+    echo -e "${OK} $pkg is already installed. Skipping..."
+  else
+    echo -e "${NOTE} Installing $pkg ..."
+    sudo opi "$pkg" -n
+    if [ $? -eq 0 ] ; then
+      echo -e "\e[1A\e[K${OK} $pkg was installed."
+    else
+      echo -e "\e[1A\e[K${ERROR} $pkg failed to install!"
+    fi
+  fi
+}
+
 installroot_base_packages() {
   printf "\n%s - Installing base packages... \n" "${NOTE}"
   pkgs=(
