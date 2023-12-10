@@ -661,3 +661,12 @@ EOF
 
   return 0
 }
+
+remove_package() {
+  local pkg="$1"
+  if sudo zypper se --match-exact -i "$pkg" &>> /dev/null; then
+    echo -e "${NOTE} Removing $pkg ..."
+    sudo zypper rm -y "$pkg" 2>&1
+  fi
+  return 0
+}

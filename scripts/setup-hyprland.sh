@@ -154,11 +154,18 @@ install_hyprland() {
   printf "\n%s - Installing Hyprland package... \n" "${NOTE}"
   pkgs=(
     hyprland
+	xdg-desktop-portal-hyprland
   )
   
   for p in "${pkgs[@]}"; do
     install_package "$p" false false false
   done
+  
+  printf "\n%s - Clearing any other xdg-desktop-portal implementations (except XDG-desktop-portal-KDE, please remove it manually!)...\n" "${NOTE}"
+  remove_package xdg-desktop-portal-gnome
+  remove_package xdg-desktop-portal-wlr
+  remove_package xdg-desktop-portal-lxqt
+  
   return 0
 }
 
