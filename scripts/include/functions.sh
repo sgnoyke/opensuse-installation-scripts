@@ -501,6 +501,37 @@ install_nvidia() {
   return 0
 }
 
+download_and_extract() {  
+  local download_url="$1"
+  local dest_dir="$2"
+
+  temp_dir=$(mktemp -d)
+  mkdir -p "$dest_dir"
+
+  filename=$(basename "$download_url")
+  extension="${filename##*.}"
+
+  wget -q "$download_url" -P "$temp_dir"
+
+  if [ ! -f "$temp_dir/$filename" ]; then
+    echo -e "${ERROR} Download failed for $download_url."
+    return 1
+  fi
+
+  case "$extension" in
+    zip)
+      unzip -q "$temp_dir/$filename" -d "$dest_dir"
+      ;;
+    bz2 | gz | xz)
+      tar -xf "$temp_dir/$filename" -C "$dest_dir"
+      ;;
+    *)
+      echo "Extension $extension not supported."
+      ;;
+  esac
+  rm -rf "$temp_dir"
+}
+
 install_gtk_themes() {
   pkgs=(
     unzip
@@ -515,34 +546,12 @@ install_gtk_themes() {
   mkdir -p ${HOME}/.cache ${HOME}/.icons ${HOME}/.themes
   
   printf "\n%s - Installing Tokyo Theme GTK packages... \n" "${NOTE}"
-  wget -O "${HOME}/.cache/TokyoNight-SE.tar.bz2" "https://github.com/ljmill/tokyo-night-icons/releases/download/v0.2.0/TokyoNight-SE.tar.bz2"
-  if [ ! $? -eq 0 ] || [ ! -f "${HOME}/.cache/TokyoNight-SE.tar.bz2" ]; then
-    echo -e "${ERROR} Download failed for TokyoNight-SE GTK icon theme."
-  else
-    tar -xvjf "${HOME}/.cache/TokyoNight-SE.tar.bz2" -C ${HOME}/.icons || true
-  fi
-
-  wget -O "${HOME}/.cache/Tokyonight-Dark-B.zip" "https://raw.githubusercontent.com/sgnoyke/opensuse-installation-scripts/main/assets/tokyo-themes/Tokyonight-Dark-B.zip"
-  if [ ! $? -eq 0 ] || [ ! -f "${HOME}/.cache/Tokyonight-Dark-B.zip" ]; then
-    echo -e "${ERROR} Download failed for Tokyonight-Dark-B GTK theme."
-  else
-    unzip -q "${HOME}/.cache/Tokyonight-Dark-B.zip" -d ${HOME}/.themes || true
-  fi
-
-  wget -O "${HOME}/.cache/Tokyonight-Light-B.zip" "https://raw.githubusercontent.com/sgnoyke/opensuse-installation-scripts/main/assets/tokyo-themes/Tokyonight-Light-B.zip"
-  if [ ! $? -eq 0 ] || [ ! -f "${HOME}/.cache/Tokyonight-Light-B.zip" ]; then
-    echo -e "${ERROR} Download failed for Tokyonight-Light-B GTK theme."
-  else
-    unzip -q "${HOME}/.cache/Tokyonight-Light-B.zip" -d ${HOME}/.themes || true
-  fi
+  download_and_extract "https://github.com/ljmill/tokyo-night-icons/releases/download/v0.2.0/TokyoNight-SE.tar.bz2" "${HOME}/.icons"
+  download_and_extract "https://raw.githubusercontent.com/sgnoyke/opensuse-installation-scripts/main/assets/tokyo-themes/Tokyonight-Dark-B.zip" "${HOME}/.themes"
+  download_and_extract "https://raw.githubusercontent.com/sgnoyke/opensuse-installation-scripts/main/assets/tokyo-themes/Tokyonight-Light-B.zip" "${HOME}/.themes"
 
   printf "\n%s - Installing Bibata-Modern-Ice Theme GTK package... \n" "${NOTE}"
-  wget -O "${HOME}/.cache/Bibata-Modern-Ice.tar.xz" "https://raw.githubusercontent.com/sgnoyke/opensuse-installation-scripts/main/assets/Bibata-Modern-Ice.tar.xz"
-  if [ ! $? -eq 0 ] || [ ! -f "${HOME}/.cache/Bibata-Modern-Ice.tar.xz" ]; then
-    echo -e "${ERROR} Download failed for Bibata-Modern-Ice GTK icon theme."
-  else
-    tar -xf "${HOME}/.cache/Bibata-Modern-Ice.tar.xz" -C ${HOME}/.icons || true
-  fi
-  
+  download_and_extract "https://raw.githubusercontent.com/sgnoyke/opensuse-installation-scripts/main/assets/Bibata-Modern-Ice.tar.xz" "${HOME}/.icons"
+
   return 0
 }
