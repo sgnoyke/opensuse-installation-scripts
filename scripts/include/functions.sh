@@ -621,7 +621,6 @@ install_thunar() {
 
 install_sddm() {
   printf "\n%s - Installing sddm packages... \n" "${NOTE}"
-
   pkgs_no_recommends=(
     sddm-qt6
     xauth
@@ -637,7 +636,7 @@ install_sddm() {
   done
   
   for login_manager in lightdm gdm lxdm lxdm-gtk3; do
-    if sudo  zypper se --match-exact -i "$login_manager" &>> /dev/null; then
+    if sudo zypper se --match-exact -i "$login_manager" &>> /dev/null; then
       echo "Disabling $login_manager..."
       sudo systemctl disable "$login_manager" 2>&1
     fi
