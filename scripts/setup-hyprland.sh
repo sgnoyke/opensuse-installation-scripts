@@ -158,7 +158,7 @@ ask_yes_no "-Install and configure SDDM log-in Manager?" Q_SDDM; echo
 setup_desktop_zypper_repos
 install_hypr_dependencies
 install_hypr_packages
-setup_desktop_fonts
+install_desktop_fonts
 install_nwg_look
 install_swaylock_effects
 install_cliphist

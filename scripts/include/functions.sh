@@ -441,7 +441,7 @@ setup_desktop_zypper_repos() {
   sudo zypper -n dup --from packman --allow-vendor-change
 }
 
-setup_desktop_fonts() {
+install_desktop_fonts() {
   printf "\n%s - Installing fonts... \n" "${NOTE}"
   pkgs=(
     adobe-sourcecodepro-fonts
