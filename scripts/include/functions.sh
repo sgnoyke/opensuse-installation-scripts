@@ -304,6 +304,7 @@ installroot_base_packages() {
     tcpdump
     xz
     7zip
+    age
     sops
     jq
     hwdata
