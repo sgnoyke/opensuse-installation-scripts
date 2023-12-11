@@ -246,6 +246,9 @@ installroot_base_packages() {
     opi
 	grub2-x86_64-efi
 	kernel-default
+	kernel-firmware-all
+	transactional-update
+	transactional-update-zypp-config
     btrfsprogs
     xfsprogs
     zypper

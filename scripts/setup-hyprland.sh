@@ -107,7 +107,7 @@ install_hypr_packages() {
 }
 
 install_nwg_look() {
-  printf "\n%s - Installing nwg-look... \n" "${NOTE}"
+  printf "\n%s - Installing nwg-look packages... \n" "${NOTE}"
   pkgs=(
     nwg-look
   )
@@ -119,7 +119,7 @@ install_nwg_look() {
 }
 
 install_swaylock_effects() {
-  printf "\n%s - Installing swaylock-effects... \n" "${NOTE}"
+  printf "\n%s - Installing swaylock-effects packages... \n" "${NOTE}"
   pkgs=(
     swaylock-effects
   )
@@ -139,7 +139,7 @@ install_cliphist() {
 }
 
 install_wlogout() {
-  printf "\n%s - Installing wlogout... \n" "${NOTE}"
+  printf "\n%s - Installing wlogout packages... \n" "${NOTE}"
   pkgs=(
     wlogout
   )
