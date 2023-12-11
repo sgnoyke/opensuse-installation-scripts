@@ -324,6 +324,9 @@ mount_additional_dirs() {
 setup_etc() {
   sudo rm /mnt/etc/resolv.conf 2>/dev/null
   sudo cp /etc/resolv.conf /mnt/etc/
+  
+  sudo mkdir -p /mnt/etc/NetworkManager/system-connections 2>/dev/null
+  sudo cp /etc/NetworkManager/system-connections/* /mnt/etc/NetworkManager/system-connections/
 }
 
 setup_firstboot() {
