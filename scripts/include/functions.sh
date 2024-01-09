@@ -658,12 +658,14 @@ install_sddm() {
   sddm_conf_dir=/etc/sddm.conf.d
   [ ! -d "$sddm_conf_dir" ] && { printf "$CAT - $sddm_conf_dir not found, creating...\n"; sudo mkdir -p "$sddm_conf_dir" 2>&1; }
   
-  printf "\n%s - Installing Tokyo sddm theme\n" "${NOTE}"
-  [ -d "/usr/share/sddm/themes/tokyo-night-sddm" ] && sudo rm -rf /usr/share/sddm/themes/tokyo-night-sddm
-  sudo git clone https://github.com/rototrash/tokyo-night-sddm.git /usr/share/sddm/themes/tokyo-night-sddm 2>&1
+  printf "\n%s - Installing Simple SDDM theme\n" "${NOTE}"
+  [ -d "/usr/share/sddm/themes/simple-sddm" ] && sudo rm -rf /usr/share/sddm/themes/simple-sddm
+  [ ! -d "/usr/share/sddm/themes" ] && mkdir -p /usr/share/sddm/themes
+  
+  sudo git clone https://github.com/JaKooLit/simple-sddm.git /usr/share/sddm/themes/simple-sddm 2>&1
   sudo tee "$sddm_conf_dir/10-theme.conf" <<EOF
 [Theme]
-Current=tokyo-night-sddm
+Current=simple-sddm
 EOF
 
   return 0
