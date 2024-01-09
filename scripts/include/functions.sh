@@ -232,6 +232,30 @@ install_package() {
   fi
 }
 
+uninstall_package() {
+    local pkg="$1"
+    local ispattern="${2:-false}"
+    local installroot="${3:-false}"
+    
+    cmd_inst="zypper -v -n"
+    if "$installroot"; then cmd_inst="$cmd_inst --installroot /mnt"; fi
+    cmd_inst="$cmd_inst --gpg-auto-import-keys remove --auto-agree-with-licenses --download-in-advance -l -y"
+    if "$ispattern"; then cmd_inst="$cmd_inst -t pattern"; fi
+
+    cmd_chk="zypper -v -n"
+    if "$installroot"; then cmd_chk="$cmd_chk --installroot /mnt"; fi
+    cmd_chk="$cmd_chk se --match-exact -i"
+    
+    if sudo $cmd_chk "$pkg" &>> /dev/null ; then
+      echo -e "${NOTE} Uninstalling $pkg ..."
+      if sudo $cmd_chk "$pkg" &>> /dev/null ; then
+        echo -e "${OK} $pkg was uninstalled."
+      else
+        echo -e "\e[1A\e[K${ERROR} $pkg failed to uninstall!"        
+      fi
+    fi
+}
+
 install_opi_package() {
   local pkg="$1"
     

@@ -97,12 +97,20 @@ install_hypr_packages() {
     gnome-system-monitor
     NetworkManager-applet
   )
+
+  uninstall=(
+      dunst
+      mako
+  )
   
   for p in "${pkgs[@]}" "${pkgs_extras[@]}"; do
     install_package "$p" false false false
   done
   for p in "${pkgs_no_recommends[@]}"; do
     install_package "$p" false false true
+  done
+  for p in "${uninstall[@]}"; do
+      uninstall_package "$p" false false
   done
   return 0
 }
