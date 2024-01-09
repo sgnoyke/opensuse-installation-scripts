@@ -191,9 +191,15 @@ setup_default_subvolume() {
 }
 
 setup_default_zypper_repos() {
-  sudo zypper --root /mnt ar -Gfp 90 --refresh https://download.opensuse.org/update/tumbleweed/ tumbleweed-updates
-  sudo zypper --root /mnt ar -Gfp 99 --refresh https://download.opensuse.org/tumbleweed/repo/non-oss/ tumbleweed-non-oss
-  sudo zypper --root /mnt ar -Gfp 99 --refresh https://download.opensuse.org/tumbleweed/repo/oss/ tumbleweed-oss
+  if [ "$SYS_ARCH" == "aarch64" ]; then
+    sudo zypper --root /mnt ar -Gfp 90 --refresh http://download.opensuse.org/ports/aarch64/update/tumbleweed/ tumbleweed-updates
+    sudo zypper --root /mnt ar -Gfp 90 --refresh http://download.opensuse.org/ports/aarch64/tumbleweed/repo/non-oss/ tumbleweed-non-oss
+    sudo zypper --root /mnt ar -Gfp 90 --refresh http://download.opensuse.org/ports/aarch64/tumbleweed/repo/oss/ tumbleweed-oss
+  else
+    sudo zypper --root /mnt ar -Gfp 90 --refresh https://download.opensuse.org/update/tumbleweed/ tumbleweed-updates
+    sudo zypper --root /mnt ar -Gfp 99 --refresh https://download.opensuse.org/tumbleweed/repo/non-oss/ tumbleweed-non-oss
+    sudo zypper --root /mnt ar -Gfp 99 --refresh https://download.opensuse.org/tumbleweed/repo/oss/ tumbleweed-oss
+  fi    
   sudo zypper --gpg-auto-import-keys --root /mnt ref -f
 }
 
