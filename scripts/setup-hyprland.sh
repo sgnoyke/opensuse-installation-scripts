@@ -43,7 +43,6 @@ install_hypr_packages() {
   
   pkgs=(
     curl
-    dunst
     git
     go
     grim
@@ -72,6 +71,7 @@ install_hypr_packages() {
     slurp
     swappy
     swayidle
+    SwayNotificationCenter
     swww
     wget
     wayland-protocols-devel
