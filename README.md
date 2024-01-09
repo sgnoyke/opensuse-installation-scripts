@@ -3,7 +3,7 @@
 ## Boot from live medium
 
 Boot from a live iso, for example:
-`openSUSE-Tumbleweed-XFCE-Live-aarch64-Snapshot20231204-Media`. Open console and
+`openSUSE-Tumbleweed-XFCE-Live-aarch64-Snapshot20231204-Media.iso`. Open console and
 change root password:
 
 ```
