@@ -12,6 +12,8 @@ BLUE=$(tput setaf 6)
 RED=$(tput setaf 1)
 RESET=$(tput sgr0)
 
+SYS_ARCH=`lscpu | awk '/Architecture:/{print $2}'`
+
 colorize_prompt() {
     local color="$1"
     local message="$2"
@@ -242,37 +244,39 @@ install_opi_package() {
 
 installroot_base_packages() {
   printf "\n%s - Installing base packages... \n" "${NOTE}"
+  system_arch_str="x86_64"
+  [ "$SYS_ARCH" == "aarch64" ] && system_arch_str="arm64"
   pkgs=(
     opi
-	grub2-x86_64-efi
-	kernel-default
-	kernel-firmware-all
-	transactional-update
-	transactional-update-zypp-config
+    grub2-${system_arch_str}-efi
+	  kernel-default
+    kernel-firmware-all
+    transactional-update
+    transactional-update-zypp-config
     btrfsprogs
     xfsprogs
     zypper
-	systemd-coredump
-	systemd-network
-	systemd-portable
-	system-group-wheel
-	system-user-mail
-	vim
-	rng-tools
-	lvm2
-	ntfs-3g
-	mdadm
-	cifs-utils
-	rpcbind
-	nvme-cli
-	nvme-cli-bash-completion
-	nvme-cli-zsh-completion
-	openssh
-	biosdevname
-	dbus-broker
+	  systemd-coredump
+	  systemd-network
+	  systemd-portable
+	  system-group-wheel
+	  system-user-mail
+	  vim
+	  rng-tools
+	  lvm2
+	  ntfs-3g
+	  mdadm
+	  cifs-utils
+	  rpcbind
+	  nvme-cli
+	  nvme-cli-bash-completion
+	  nvme-cli-zsh-completion
+	  openssh
+	  biosdevname
+	  dbus-broker
     util-linux
     nano
-	iputils
+	  iputils
     openssh-server
     dmraid
     ca-certificates-mozilla
@@ -280,14 +284,14 @@ installroot_base_packages() {
     ca-certificates-cacert
     lsof
     shim
-	chezmoi
+	  chezmoi
     git
     NetworkManager
     aaa_base
     aaa_base-extras
     iproute2
     net-tools
-	less
+	  less
     psmisc
     timezone
     curl
@@ -309,7 +313,7 @@ installroot_base_packages() {
     jq
     hwdata
     psmisc
-	shadow
+	  shadow
   )
   
   for p in "${pkgs[@]}"; do
