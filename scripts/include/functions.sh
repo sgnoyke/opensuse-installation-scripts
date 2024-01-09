@@ -278,7 +278,6 @@ installroot_base_packages() {
 	  nvme-cli-bash-completion
 	  nvme-cli-zsh-completion
 	  openssh
-	  biosdevname
 	  dbus-broker
     util-linux
     nano
@@ -587,13 +586,13 @@ install_gtk_themes() {
   
   mkdir -p ${HOME}/.cache ${HOME}/.icons ${HOME}/.themes
   
-  printf "\n%s - Installing Tokyo Theme GTK packages... \n" "${NOTE}"
-  download_and_extract "https://github.com/ljmill/tokyo-night-icons/releases/download/v0.2.0/TokyoNight-SE.tar.bz2" "${HOME}/.icons"
-  download_and_extract "https://raw.githubusercontent.com/sgnoyke/opensuse-installation-scripts/main/assets/tokyo-themes/Tokyonight-Dark-B.zip" "${HOME}/.themes"
-  download_and_extract "https://raw.githubusercontent.com/sgnoyke/opensuse-installation-scripts/main/assets/tokyo-themes/Tokyonight-Light-B.zip" "${HOME}/.themes"
+  printf "\n%s - Installing GTK themes packages (icons, themes)... \n" "${NOTE}"
 
-  printf "\n%s - Installing Bibata-Modern-Ice Theme GTK package... \n" "${NOTE}"
-  download_and_extract "https://raw.githubusercontent.com/sgnoyke/opensuse-installation-scripts/main/assets/Bibata-Modern-Ice.tar.xz" "${HOME}/.icons"
+  download_and_extract "https://raw.githubusercontent.com/sgnoyke/opensuse-installation-scripts/main/assets/themes/Tokyonight-Dark-BL-LB.tar.gz" "${HOME}/.themes"  
+  download_and_extract "https://raw.githubusercontent.com/sgnoyke/opensuse-installation-scripts/main/assets/themes/Tokyonight-Light-B-LB.tar.gz" "${HOME}/.themes"
+  download_and_extract "https://raw.githubusercontent.com/sgnoyke/opensuse-installation-scripts/main/assets/icons/Tokyonight-Dark-Icons.zip" "${HOME}/.icons"
+  download_and_extract "https://raw.githubusercontent.com/sgnoyke/opensuse-installation-scripts/main/assets/icons/Tokyonight-Light-Icons.zip" "${HOME}/.icons"
+  download_and_extract "https://raw.githubusercontent.com/sgnoyke/opensuse-installation-scripts/main/assets/icons/Bibata-Modern-Ice.tar.xz" "${HOME}/.icons"
 
   return 0
 }
