@@ -37,7 +37,6 @@ install_hypr_dependencies() {
 }
 
 install_hypr_packages() {
-  printf "\n%s - Installing hyprland packages... \n" "${NOTE}"
   pkgs_extras=(
   )
   
@@ -103,9 +102,12 @@ install_hypr_packages() {
       mako
   )
   
+  printf "\n%s - Uninstalling conflicting packages... \n" "${NOTE}"
   for p in "${uninstall[@]}"; do
-      uninstall_package "$p" false false
+    uninstall_package "$p" false false
   done
+
+  printf "\n%s - Installing hyprland packages... \n" "${NOTE}"
   for p in "${pkgs[@]}" "${pkgs_extras[@]}"; do
     install_package "$p" false false false
   done
