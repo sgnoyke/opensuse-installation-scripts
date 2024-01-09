@@ -576,8 +576,9 @@ copy_with_backup() {
 install_gtk_themes() {
   pkgs=(
     unzip
-	wget
-	tar
+    wget
+    tar
+    gtk2-engine-murrine
   )
   
   for p in "${pkgs[@]}"; do

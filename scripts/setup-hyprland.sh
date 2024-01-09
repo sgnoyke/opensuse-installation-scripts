@@ -78,6 +78,7 @@ install_hypr_packages() {
     wl-clipboard
     xdg-user-dirs
     xwayland
+    xdg-utils
     brightnessctl
     btop
     cava
